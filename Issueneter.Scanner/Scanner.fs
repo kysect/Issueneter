@@ -13,4 +13,3 @@ type RepositoryScanner() =
             }
         ()
     }
-

@@ -9,8 +9,4 @@
         <Compile Include="Scanner.fs" />
     </ItemGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\Issueneter.Contracts\Issueneter.Contracts.fsproj" />
-    </ItemGroup>
-
 </Project>
