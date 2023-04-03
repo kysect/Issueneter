@@ -22,12 +22,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 var services = builder.Services;
 
-services.AddHangfire(config =>
+services.AddHangfire((sp, config) =>
 {
     config
         .UseSimpleAssemblyNameTypeSerializer()
         .UseRecommendedSerializerSettings()
-        .UsePostgreSqlStorage("User ID=postgres;Password=postgres;Host=192.168.1.116;Port=5432;Database=postgres;Pooling=true;Integrated Security=true;");
+        .UsePostgreSqlStorage(sp.GetRequiredOptions<DatabaseOptions>().ConnectionString);
 });
 
 services.AddHangfireServer();

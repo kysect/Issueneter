@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Issueneter.WebAPI", "Issueneter.WebAPI\Issueneter.WebAPI.fsproj", "{7F7851A3-E5C0-4159-975A-36B15A1A6E1F}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Issueneter.WebAPI", "Old\Issueneter.WebAPI\Issueneter.WebAPI.fsproj", "{7F7851A3-E5C0-4159-975A-36B15A1A6E1F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Issueneter.Host", "Issueneter.Host\Issueneter.Host.csproj", "{00CBCA5E-6EEB-40FD-948D-90B72BDE0E34}"
 EndProject
