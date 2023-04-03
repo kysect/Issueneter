@@ -24,6 +24,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Issueneter.ApiModels\Issueneter.ApiModels.fsproj" />
+      <ProjectReference Include="..\Issueneter.Github\Issueneter.Github.csproj" />
     </ItemGroup>
 
 </Project>

@@ -6,12 +6,4 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
-    <ItemGroup>
-      <PackageReference Include="Octokit" Version="5.0.2" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\Issueneter.Domain\Issueneter.Domain.csproj" />
-    </ItemGroup>
-
 </Project>
