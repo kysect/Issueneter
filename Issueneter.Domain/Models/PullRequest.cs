@@ -4,7 +4,7 @@ namespace Issueneter.Domain.Models;
 
 public class PullRequest
 {
-    public PullRequest(string title, string author, string url, List<string> labels, Ref<List<TimelineEvent>> events)
+    public PullRequest(string title, string author, string url, IReadOnlyList<string> labels, Ref<List<TimelineEvent>> events)
     {
         Title = title;
         Author = author;

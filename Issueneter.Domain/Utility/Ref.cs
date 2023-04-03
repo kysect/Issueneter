@@ -12,6 +12,7 @@ public class Ref<T>
 
     public bool IsLoaded { get; private set; }
 
+    //TODO: Synchronization
     public async Task<T> Load()
     {
         if (IsLoaded) return _value;
