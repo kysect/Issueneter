@@ -1,6 +1,22 @@
 using Hangfire;
 using Hangfire.PostgreSql;
 using Issueneter.ApiModels.Responses;
+using Issueneter.Domain.Models;
+using Issueneter.Github;
+using Octokit;
+
+var productInformation = new ProductHeaderValue("ISSUENETER", "1.0.0");
+var client = new GitHubClient(productInformation);
+client.Credentials = new Credentials("");
+var service = new GithubApiService(client);
+
+var issues = await service.GetIssues(DateTimeOffset.Now - TimeSpan.FromHours(3), new ActivitySource("dotnet", "runtime"));
+
+var events = await issues.ElementAt(0).Events.Load();
+
+Console.WriteLine(issues.Count());
+
+return;
 
 var builder = WebApplication.CreateBuilder(args);
 
