@@ -48,7 +48,7 @@ public class GithubApiService
             SortProperty = PullRequestSort.Updated,
             SortDirection = SortDirection.Descending
         };
-
+        
         var pullRequests = await _client.Repository.PullRequest.GetAllForRepository(source.Owner, source.Repository, request);
 
         return pullRequests

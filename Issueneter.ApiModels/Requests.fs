@@ -1,29 +1,15 @@
 ﻿namespace Issueneter.ApiModels.Requests
 
 
-type LabelFilter = {
-    Title: string
-}
+type IssueFilter = string
 
-type AuthorFilter = {
-    Nickname: string
-}
-
-type IssueFilter = {
-    LabelFilters: LabelFilter array
-    AuthorFilters: AuthorFilter array
-}
-
-type PullRequestFilter = {
-    LabelFilters: LabelFilter array
-    AuthorFilters: AuthorFilter array
-}
+type PullRequestFilter = string
 
 type AddNewRepoScanRequest = {
     AccountOrOrganization: string
     Repository: string
-    Issues: IssueFilter array
-    PRs: PullRequestFilter array
+    Issues: IssueFilter voption
+    PRs: PullRequestFilter voption
 }
 
 type AddNewAccountScanRequest = {

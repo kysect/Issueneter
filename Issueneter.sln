@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Issueneter.Github", "Issuen
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Issueneter.Domain", "Issueneter.Domain\Issueneter.Domain.csproj", "{6DA5A4BF-4BFE-4F95-844B-E1E03CFF76B6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Issueneter.Persistence", "Issueneter.Persistence\Issueneter.Persistence.csproj", "{EC86C9CF-504B-4C74-8CE7-C014563A8286}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,6 +40,10 @@ Global
 		{6DA5A4BF-4BFE-4F95-844B-E1E03CFF76B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6DA5A4BF-4BFE-4F95-844B-E1E03CFF76B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6DA5A4BF-4BFE-4F95-844B-E1E03CFF76B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC86C9CF-504B-4C74-8CE7-C014563A8286}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC86C9CF-504B-4C74-8CE7-C014563A8286}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC86C9CF-504B-4C74-8CE7-C014563A8286}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC86C9CF-504B-4C74-8CE7-C014563A8286}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{7F7851A3-E5C0-4159-975A-36B15A1A6E1F} = {E5EE3473-EE1B-4C38-B680-5CD238226CEF}

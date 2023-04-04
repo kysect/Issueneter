@@ -1,8 +1,14 @@
+using System.Text.Json;
 using Hangfire;
 using Hangfire.PostgreSql;
+using Issueneter.ApiModels.Requests;
 using Issueneter.ApiModels.Responses;
 using Issueneter.Domain.Models;
 using Issueneter.Github;
+using Issueneter.Host.Composition;
+using Issueneter.Host.Options;
+using Issueneter.Persistence;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Octokit;
 
 var productInformation = new ProductHeaderValue("ISSUENETER", "1.0.0");
@@ -14,9 +20,8 @@ var issues = await service.GetIssues(DateTimeOffset.Now - TimeSpan.FromHours(3),
 
 var events = await issues.ElementAt(0).Events.Load();
 
-Console.WriteLine(issues.Count());
+Console.WriteLine(issues.Count);
 
-return;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,14 +43,35 @@ app.MapHangfireDashboard();
 
 app.MapGet("/", () =>
 {
-    Handle();
     return "Ok";
 });
 
-app.MapGet("/scans", async () => await GetScans());
-app.MapGet("/scan/{id}", async (int id) => await GetScan(id));
+// TODO: Засурсгенить
+var availables = new Dictionary<string, (string name, string property)[]>
+{
+    ["Issue"] = new[] {("Issue author", "CreatedBy"), ("Is open", "State")},
+    ["PullRequest"] = new[] {("Pull request author", "CreatedBy"), ("State", "State")}
+};
 
-app.MapPost("/scan", async () => await AddNewScanTask());
+app.MapGet("/available_sources", () =>
+{
+    return availables;
+});
+
+app.MapGet("/scans", async () => await GetScans());
+app.MapGet("/scan/{id}", async (int id, ScanStore store) => await GetScan(store, id));
+
+app.MapPost("/{source}/scan", async (string source, ScanStore store, string json) =>
+{
+    // TODO: Засурсгенить
+    if (source.ToLowerInvariant() == "PullRequest")
+    {
+        var repoRequest = JsonSerializer.Deserialize<AddNewRepoScanRequest>(json);
+        await store.CreateNewScan(repoRequest);
+    }
+
+    return Results.NotFound();
+});
 app.Run();
 
 Task<IReadOnlyCollection<ScansResponse>> GetScans()
@@ -53,17 +79,8 @@ Task<IReadOnlyCollection<ScansResponse>> GetScans()
     return Task.FromResult((IReadOnlyCollection<ScansResponse>)Array.Empty<ScansResponse>());
 }
 
-Task<ScanResponse> GetScan(int id)
+async Task<ScanResponse> GetScan(ScanStore store, int id)
 {
+    await store.GetScan(id);
     return null;
-}
-
-Task AddNewScanTask()
-{
-    return Task.CompletedTask;
-}
-
-void Handle()
-{
-    RecurringJob.AddOrUpdate("parse repo", () => Console.WriteLine("aboba"), () => "15 * * * *");
 }
