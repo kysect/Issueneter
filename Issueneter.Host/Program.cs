@@ -11,7 +11,7 @@ using Issueneter.Persistence;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Octokit;
 
-var productInformation = new ProductHeaderValue("ISSUENETER", "1.0.0");
+/*var productInformation = new ProductHeaderValue("ISSUENETER", "1.0.0");
 var client = new GitHubClient(productInformation);
 client.Credentials = new Credentials("");
 var service = new GithubApiService(client);
@@ -21,30 +21,28 @@ var issues = await service.GetIssues(DateTimeOffset.Now - TimeSpan.FromHours(3),
 var events = await issues.ElementAt(0).Events.Load();
 
 Console.WriteLine(issues.Count);
-
+*/
 
 var builder = WebApplication.CreateBuilder(args);
 
 var services = builder.Services;
 
-services.AddHangfire((sp, config) =>
-{
-    config
-        .UseSimpleAssemblyNameTypeSerializer()
-        .UseRecommendedSerializerSettings()
-        .UsePostgreSqlStorage(sp.GetRequiredOptions<DatabaseOptions>().ConnectionString);
-});
+services
+    .AddDbRelated(builder.Configuration)
+    .AddHangfireRelated()
+    .AddSwaggerRelated();
 
-services.AddHangfireServer();
 var app = builder.Build();
 
+app.UseSwagger().UseSwaggerUI();
 app.UseHangfireDashboard();
 app.MapHangfireDashboard();
+
 
 app.MapGet("/", () =>
 {
     return "Ok";
-});
+}).WithOpenApi();
 
 // TODO: Засурсгенить
 var availables = new Dictionary<string, (string name, string property)[]>
@@ -56,10 +54,10 @@ var availables = new Dictionary<string, (string name, string property)[]>
 app.MapGet("/available_sources", () =>
 {
     return availables;
-});
+}).WithOpenApi();
 
-app.MapGet("/scans", async () => await GetScans());
-app.MapGet("/scan/{id}", async (int id, ScanStore store) => await GetScan(store, id));
+app.MapGet("/scans", async () => await GetScans()).WithOpenApi();
+app.MapGet("/scan/{id}", async (int id, ScanStore store) => await GetScan(store, id)).WithOpenApi();
 
 app.MapPost("/{source}/scan", async (string source, ScanStore store, string json) =>
 {
@@ -71,7 +69,7 @@ app.MapPost("/{source}/scan", async (string source, ScanStore store, string json
     }
 
     return Results.NotFound();
-});
+}).WithOpenApi();
 app.Run();
 
 Task<IReadOnlyCollection<ScansResponse>> GetScans()
