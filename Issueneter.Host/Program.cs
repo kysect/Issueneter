@@ -9,6 +9,7 @@ using Issueneter.Host.Composition;
 using Issueneter.Host.Options;
 using Issueneter.Persistence;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using Octokit;
 
 /*var productInformation = new ProductHeaderValue("ISSUENETER", "1.0.0");
@@ -39,11 +40,6 @@ app.UseHangfireDashboard();
 app.MapHangfireDashboard();
 
 
-app.MapGet("/", () =>
-{
-    return "Ok";
-}).WithOpenApi();
-
 // TODO: Засурсгенить
 var availables = new Dictionary<string, (string name, string property)[]>
 {
@@ -51,15 +47,12 @@ var availables = new Dictionary<string, (string name, string property)[]>
     ["PullRequest"] = new[] {("Pull request author", "CreatedBy"), ("State", "State")}
 };
 
-app.MapGet("/available_sources", () =>
-{
-    return availables;
-}).WithOpenApi();
+app.MapGet("/available_sources", () => availables).WithOpenApi();
 
-app.MapGet("/scans", async () => await GetScans()).WithOpenApi();
+app.MapGet("/scans", async (ScanStore store) => await GetScans(store)).WithOpenApi();
 app.MapGet("/scan/{id}", async (int id, ScanStore store) => await GetScan(store, id)).WithOpenApi();
 
-app.MapPost("/{source}/scan", async (string source, ScanStore store, string json) =>
+app.MapPost("/{source}/scan", async (string source, ScanStore store, [FromBody] string json) =>
 {
     // TODO: Засурсгенить
     if (source.ToLowerInvariant() == "PullRequest")
@@ -72,13 +65,12 @@ app.MapPost("/{source}/scan", async (string source, ScanStore store, string json
 }).WithOpenApi();
 app.Run();
 
-Task<IReadOnlyCollection<ScansResponse>> GetScans()
+async Task<IReadOnlyCollection<int>> GetScans(ScanStore store)
 {
-    return Task.FromResult((IReadOnlyCollection<ScansResponse>)Array.Empty<ScansResponse>());
+    return await store.GetAllScansIds();
 }
 
 async Task<ScanResponse> GetScan(ScanStore store, int id)
 {
-    await store.GetScan(id);
-    return null;
+    return await store.GetScan(id);
 }

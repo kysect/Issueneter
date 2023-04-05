@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Issueneter.ApiModels.Requests;
+using Issueneter.ApiModels.Responses;
 
 namespace Issueneter.Persistence;
 
@@ -12,15 +13,22 @@ public class ScanStore
         _connectionFactory = connectionFactory;
     }
 
-    public async Task GetScan(int scanId)
+    public async Task<IReadOnlyCollection<int>> GetAllScansIds()
+    {
+        const string query = @"SELECT id FROM issueneter.scans";
+
+        using var connection = _connectionFactory.GetConnection();
+        return (await connection.QueryAsync<int>(query)).AsList();
+    }
+    public async Task<ScanResponse> GetScan(int scanId)
     {
         const string query = @"
-            SELECT * FROM issueneter.scans
+            SELECT id, scan_type as Type, accOrOrg, repo, filters FROM issueneter.scans
             WHERE id = @id";
 
         var @params = new {id = scanId}; 
         using var connection = _connectionFactory.GetConnection();
-        var result = await connection.QuerySingleOrDefaultAsync<int>(query, @params);
+        return await connection.QuerySingleOrDefaultAsync<ScanResponse>(query, @params);
     }
 
     public async Task CreateNewScan(AddNewRepoScanRequest request)
