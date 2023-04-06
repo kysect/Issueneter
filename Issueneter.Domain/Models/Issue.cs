@@ -2,7 +2,7 @@ using Issueneter.Domain.Utility;
 
 namespace Issueneter.Domain.Models;
 
-public class Issue
+public class Issue : IFilterable
 {
     public Issue(string title, string author, string url, IReadOnlyList<string> labels, Ref<List<TimelineEvent>> events)
     {

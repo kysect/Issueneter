@@ -4,13 +4,17 @@ using Hangfire.PostgreSql;
 using Issueneter.ApiModels.Requests;
 using Issueneter.ApiModels.Responses;
 using Issueneter.Domain.Models;
+using Issueneter.Filters;
 using Issueneter.Github;
 using Issueneter.Host.Composition;
 using Issueneter.Host.Options;
+using Issueneter.Host.Requests;
+using Issueneter.Host.TempDirecory;
 using Issueneter.Persistence;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Octokit;
+using PullRequest = Issueneter.Domain.Models.PullRequest;
 
 /*var productInformation = new ProductHeaderValue("ISSUENETER", "1.0.0");
 var client = new GitHubClient(productInformation);
@@ -23,6 +27,26 @@ var events = await issues.ElementAt(0).Events.Load();
 
 Console.WriteLine(issues.Count);
 */
+
+
+var json = @"{
+   ""Type"":""And"",
+   ""Left"":{
+      ""Type"" : ""Label"",
+      ""State"": ""Opened""
+   },
+   ""Right"":{
+      ""Type"" : ""Dynamic"",
+      ""Field"" : {
+         ""Name"": ""Name"",
+         ""Value"" : ""Mr0N"",
+         ""Operand"" : ""Equals""
+      }
+   }
+}";
+
+
+var parsed = Newtonsoft.Json.JsonConvert.DeserializeObject<IFilter>(json, new JsonFilterConverter());
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -52,13 +76,13 @@ app.MapGet("/available_sources", () => availables).WithOpenApi();
 app.MapGet("/scans", async (ScanStore store) => await GetScans(store)).WithOpenApi();
 app.MapGet("/scan/{id}", async (int id, ScanStore store) => await GetScan(store, id)).WithOpenApi();
 
-app.MapPost("/{source}/scan", async (string source, ScanStore store, [FromBody] string json) =>
+app.MapPost("/{source}/scan", async (string source, ScanStore store, [FromBody] AddNewRepoScanRequest request) =>
 {
     // TODO: Засурсгенить
-    if (source.ToLowerInvariant() == "PullRequest")
+    if (source.ToLowerInvariant() == "pullrequest")
     {
-        var repoRequest = JsonSerializer.Deserialize<AddNewRepoScanRequest>(json);
-        await store.CreateNewScan(repoRequest);
+        var repoFilters = JsonSerializer.Deserialize<IFilter<PullRequest>>(request.Filters);
+        await store.CreateNewScan(repoFilters);
     }
 
     return Results.NotFound();
