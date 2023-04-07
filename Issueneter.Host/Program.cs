@@ -24,21 +24,23 @@ Console.WriteLine(issues.Count);
 */
 
 
-var json = @"{
-   ""Type"":""Or"",
-   ""Left"":{
-      ""Type"" : ""Label"",
-      ""State"": ""Opened""
-   },
-   ""Right"":{
-      ""Type"" : ""Dynamic"",
-      ""Field"" : {
-         ""Name"": ""Name"",
-         ""Value"" : ""Mr0N"",
-         ""Operand"" : ""Equals""
-      }
-   }
-}";
+var t = "{\"Type\":\"And\",\"Left\":{\"Type\":\"Author\",\"Value\":\"Opened\"},\"Right\":{\"Type\":\"Dynamic\",\"Name\":\"Name\",\"Value\":\"Mr0N\",\"Operand\":\"Equals\"}}";
+
+var json = """
+    {
+       "Type":"And",
+       "Left":{
+          "Type" : "Author",
+          "Value": "Opened"
+       },
+       "Right":{
+          "Type" : "Dynamic",
+             "Name": "Name",
+             "Value" : "Mr0N",
+             "Operand" : "Equals"
+       }
+    }
+    """;
 
 
 var parsed = JsonConvert.DeserializeObject<IFilter<PullRequest>>(json, new JsonFilterConverter<PullRequest>());

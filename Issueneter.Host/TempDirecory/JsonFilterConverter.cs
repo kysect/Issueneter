@@ -9,9 +9,9 @@ using PullRequest = Issueneter.Domain.Models.PullRequest;
 
 namespace Issueneter.Host.TempDirecory;
 
-public class JsonFilterConverter<T> : CustomCreationConverter<object> where T : IFilterable
+public class JsonFilterConverter<T> : CustomCreationConverter<IFilter<T>> where T : IFilterable
 {
-    public override object Create(Type objectType)
+    public override IFilter<T> Create(Type objectType)
     {
         throw new NotImplementedException();
     }
@@ -22,8 +22,9 @@ public class JsonFilterConverter<T> : CustomCreationConverter<object> where T : 
         switch (type.ToLower())
         {
             case "or":
+                return new ComplexFilter<T>(ComplexOperand.Or);
             case "and":
-                return new ComplexFilter<T>();
+                return new ComplexFilter<T>(ComplexOperand.And);
             default:
                 return new AuthorFilter();
         }

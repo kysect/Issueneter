@@ -35,11 +35,12 @@ public class ScanStore
     {
         const string query = @"
             INSERT INTO issueneter.scans
-            VALUES (@type, @acc, @repo, now(), @filters)";
+            (scan_type, owner, repo, created, filters)
+            VALUES (@type, @acc, @repo, now(), to_json(@filters))";
 
         var @params = new
         {
-            type = creation.Type,
+            type = (int)creation.Type,
             acc = creation.Owner,
             repo = creation.Repo,
             filters = creation.Filters

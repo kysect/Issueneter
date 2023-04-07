@@ -15,7 +15,6 @@ let configureApp (app : IApplicationBuilder) =
     ()
 
 let configureServices (services : IServiceCollection) =
-    services.AddHangfire()
     services.AddLogging() |> ignore
     services.AddSingleton<IssueneterTelegramBot>() |> ignore
     services.AddHostedService<Scanner>() |> ignore

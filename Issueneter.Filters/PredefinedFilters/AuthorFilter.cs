@@ -4,24 +4,20 @@ namespace Issueneter.Filters.PredefinedFilters;
 
 public class AuthorFilter : IFilter<Issue>, IFilter<PullRequest>
 {
-    private string _value;
+    public string Value { get; set; }
 
     public AuthorFilter()
     {
         
     }
-    public AuthorFilter(string value)
-    {
-        _value = value;
-    }
 
     public bool Apply(Issue entity)
     {
-        return entity.Author == _value;
+        return entity.Author == Value;
     }
 
     public bool Apply(PullRequest entity)
     {
-        return entity.Author == _value;
+        return entity.Author == Value;
     }
 }

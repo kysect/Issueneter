@@ -13,9 +13,14 @@ public enum ComplexOperand
 public class ComplexFilter<T> : IFilter<T>
     where T: IFilterable
 {
-    public IFilter<T> Left { get; }
-    public IFilter<T> Right { get; }
-    public ComplexOperand Operand { get; }
+    public ComplexFilter(ComplexOperand operand)
+    {
+        Operand = operand;
+    }
+
+    public IFilter<T> Left { get; set; }
+    public IFilter<T> Right { get; set; }
+    public ComplexOperand Operand { get; set; }
     
     public bool Apply(T entity)
     {
