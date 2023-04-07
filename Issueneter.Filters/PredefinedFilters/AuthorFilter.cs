@@ -6,6 +6,10 @@ public class AuthorFilter : IFilter<Issue>, IFilter<PullRequest>
 {
     private string _value;
 
+    public AuthorFilter()
+    {
+        
+    }
     public AuthorFilter(string value)
     {
         _value = value;

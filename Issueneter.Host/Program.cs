@@ -1,20 +1,15 @@
-using System.Text.Json;
 using Hangfire;
-using Hangfire.PostgreSql;
-using Issueneter.ApiModels.Requests;
 using Issueneter.ApiModels.Responses;
-using Issueneter.Domain.Models;
 using Issueneter.Filters;
-using Issueneter.Github;
 using Issueneter.Host.Composition;
-using Issueneter.Host.Options;
 using Issueneter.Host.Requests;
 using Issueneter.Host.TempDirecory;
 using Issueneter.Persistence;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using Octokit;
+using Newtonsoft.Json;
 using PullRequest = Issueneter.Domain.Models.PullRequest;
+using ScanType = Issueneter.Persistence.ScanType;
 
 /*var productInformation = new ProductHeaderValue("ISSUENETER", "1.0.0");
 var client = new GitHubClient(productInformation);
@@ -30,7 +25,7 @@ Console.WriteLine(issues.Count);
 
 
 var json = @"{
-   ""Type"":""And"",
+   ""Type"":""Or"",
    ""Left"":{
       ""Type"" : ""Label"",
       ""State"": ""Opened""
@@ -46,7 +41,7 @@ var json = @"{
 }";
 
 
-var parsed = Newtonsoft.Json.JsonConvert.DeserializeObject<IFilter>(json, new JsonFilterConverter());
+var parsed = JsonConvert.DeserializeObject<IFilter<PullRequest>>(json, new JsonFilterConverter<PullRequest>());
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -65,24 +60,32 @@ app.MapHangfireDashboard();
 
 
 // TODO: Засурсгенить
-var availables = new Dictionary<string, (string name, string property)[]>
+var availables = new Dictionary<string, Available[]>
 {
-    ["Issue"] = new[] {("Issue author", "CreatedBy"), ("Is open", "State")},
-    ["PullRequest"] = new[] {("Pull request author", "CreatedBy"), ("State", "State")}
+    ["Issue"] = new[] {new Available("Issue author", "CreatedBy"), new Available("Is open", "State")},
+    ["PullRequest"] = new[] {new Available("Pull request author", "CreatedBy"), new Available("State", "State")}
 };
 
 app.MapGet("/available_sources", () => availables).WithOpenApi();
 
 app.MapGet("/scans", async (ScanStore store) => await GetScans(store)).WithOpenApi();
-app.MapGet("/scan/{id}", async (int id, ScanStore store) => await GetScan(store, id)).WithOpenApi();
+app.MapGet("/scan/{id}", async (int id, ScanStore store) =>
+{
+    var scan = await GetScan(store, id);
+    if (scan is not null)
+        return Results.Ok(scan);
+
+    return Results.NotFound();
+}).WithOpenApi();
 
 app.MapPost("/{source}/scan", async (string source, ScanStore store, [FromBody] AddNewRepoScanRequest request) =>
 {
     // TODO: Засурсгенить
     if (source.ToLowerInvariant() == "pullrequest")
     {
-        var repoFilters = JsonSerializer.Deserialize<IFilter<PullRequest>>(request.Filters);
-        await store.CreateNewScan(repoFilters);
+        var repoFilters = JsonConvert.DeserializeObject<IFilter<PullRequest>>(request.Filters, new JsonFilterConverter<PullRequest>());
+        var creation = new ScanCreation(ScanType.PullRequest, request.Owner, request.Repo, request.Filters);
+        await store.CreateNewScan(creation);
     }
 
     return Results.NotFound();
@@ -94,7 +97,19 @@ async Task<IReadOnlyCollection<int>> GetScans(ScanStore store)
     return await store.GetAllScansIds();
 }
 
-async Task<ScanResponse> GetScan(ScanStore store, int id)
+async Task<ScanResponse?> GetScan(ScanStore store, int id)
 {
     return await store.GetScan(id);
+}
+
+public class Available
+{
+    public Available(string name, string field)
+    {
+        Name = name;
+        Field = field;
+    }
+
+    public string Name { get; }
+    public string Field { get; }
 }

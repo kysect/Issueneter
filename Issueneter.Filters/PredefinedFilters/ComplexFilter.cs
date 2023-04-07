@@ -6,8 +6,8 @@ namespace Issueneter.Filters.PredefinedFilters;
 
 public enum ComplexOperand
 {
-    And,
-    Or
+    And = 1,
+    Or = 2
 }
 
 public class ComplexFilter<T> : IFilter<T>

@@ -20,10 +20,10 @@ public class ScanStore
         using var connection = _connectionFactory.GetConnection();
         return (await connection.QueryAsync<int>(query)).AsList();
     }
-    public async Task<ScanResponse> GetScan(int scanId)
+    public async Task<ScanResponse?> GetScan(int scanId)
     {
         const string query = @"
-            SELECT id, scan_type as Type, accOrOrg, repo, filters FROM issueneter.scans
+            SELECT id, scan_type as Type, owner, repo, filters FROM issueneter.scans
             WHERE id = @id";
 
         var @params = new {id = scanId}; 
@@ -31,42 +31,20 @@ public class ScanStore
         return await connection.QuerySingleOrDefaultAsync<ScanResponse>(query, @params);
     }
 
-    public async Task CreateNewScan(AddNewRepoScanRequest request)
-    {
-        if (request.Issues.IsSome)
-        {
-            var issueParams = new
-            {
-                type = "Issue",
-                acc = request.AccountOrOrganization,
-                repo = request.Repository,
-                filters = request.Issues.Value
-            };
-
-            await CreateNewScan(issueParams);
-        }
-
-        if (request.PRs.IsSome)
-        {
-            var prParams = new
-            {
-                type = "Repo",
-                acc = request.AccountOrOrganization,
-                repo = request.Repository,
-                filters = request.PRs.Value
-            };
-            
-            await CreateNewScan(prParams);
-        }
-           
-    }
-    
-    private Task CreateNewScan(object @params)
+    public Task CreateNewScan(ScanCreation creation)
     {
         const string query = @"
             INSERT INTO issueneter.scans
             VALUES (@type, @acc, @repo, now(), @filters)";
 
+        var @params = new
+        {
+            type = creation.Type,
+            acc = creation.Owner,
+            repo = creation.Repo,
+            filters = creation.Filters
+        };
+        
         var connection = _connectionFactory.GetConnection();
 
         return connection.ExecuteAsync(query, @params);
