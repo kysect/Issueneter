@@ -7,4 +7,4 @@ public enum ScanType
     PullRequest = 2
 }
 
-public record ScanCreation(ScanType Type, string Owner, string Repo, string Filters);
+public record ScanCreation(ScanType Type, string Owner, string Repo, long ChatId, string Filters);

@@ -4,10 +4,7 @@ using Issueneter.Domain;
 using Issueneter.Filters;
 using Issueneter.Filters.PredefinedFilters;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
-using Octokit;
-using PullRequest = Issueneter.Domain.Models.PullRequest;
 
 namespace Issueneter.Host.TempDirecory;
 
