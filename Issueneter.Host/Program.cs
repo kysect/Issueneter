@@ -1,5 +1,4 @@
 using Hangfire;
-using Issueneter.ApiModels.Responses;
 using Issueneter.Domain.Models;
 using Issueneter.Filters;
 using Issueneter.Host.Composition;
@@ -109,7 +108,7 @@ async Task<IReadOnlyCollection<int>> GetScans(ScanStorage store)
     return await store.GetAllScansIds();
 }
 
-async Task<ScanResponse?> GetScan(ScanStorage store, int id)
+async Task<ScanEntry?> GetScan(ScanStorage store, int id)
 {
     return await store.GetScan(id);
 }

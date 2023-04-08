@@ -1,6 +1,4 @@
 using Dapper;
-using Hangfire;
-using Issueneter.ApiModels.Responses;
 
 namespace Issueneter.Persistence;
 

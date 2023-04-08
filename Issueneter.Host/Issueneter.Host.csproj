@@ -30,7 +30,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Issueneter.ApiModels\Issueneter.ApiModels.fsproj" />
       <ProjectReference Include="..\Issueneter.Filters\Issueneter.Filters.csproj" />
       <ProjectReference Include="..\Issueneter.Github\Issueneter.Github.csproj" />
       <ProjectReference Include="..\Issueneter.Persistence\Issueneter.Persistence.csproj" />
