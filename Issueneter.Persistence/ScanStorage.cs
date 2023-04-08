@@ -1,13 +1,12 @@
-﻿using Dapper;
-using Issueneter.ApiModels.Responses;
+using Dapper;
 
 namespace Issueneter.Persistence;
 
-public class ScanStore
+public class ScanStorage
 {
     private readonly IDbConnectionFactory _connectionFactory;
 
-    public ScanStore(IDbConnectionFactory connectionFactory)
+    public ScanStorage(IDbConnectionFactory connectionFactory)
     {
         _connectionFactory = connectionFactory;
     }
@@ -19,7 +18,7 @@ public class ScanStore
         using var connection = _connectionFactory.GetConnection();
         return (await connection.QueryAsync<int>(query)).AsList();
     }
-    public async Task<ScanResponse?> GetScan(int scanId)
+    public async Task<ScanEntry?> GetScan(int scanId)
     {
         const string query = @"
             SELECT id, scan_type as Type, owner, repo, filters FROM issueneter.scans
@@ -27,15 +26,16 @@ public class ScanStore
 
         var @params = new {id = scanId}; 
         using var connection = _connectionFactory.GetConnection();
-        return await connection.QuerySingleOrDefaultAsync<ScanResponse>(query, @params);
+        return await connection.QuerySingleOrDefaultAsync<ScanEntry>(query, @params);
     }
 
-    public Task CreateNewScan(ScanCreation creation)
+    public async Task<long> CreateNewScan(ScanCreation creation)
     {
         const string query = @"
             INSERT INTO issueneter.scans
             (scan_type, owner, repo, created, filters)
-            VALUES (@type, @acc, @repo, now(), to_json(@filters))";
+            VALUES (@type, @acc, @repo, now(), to_json(@filters))
+            RETURNING id";
 
         var @params = new
         {
@@ -46,7 +46,7 @@ public class ScanStore
         };
         
         var connection = _connectionFactory.GetConnection();
-
-        return connection.ExecuteAsync(query, @params);
+        
+        return await connection.ExecuteScalarAsync<int>(query, @params);
     }
 }

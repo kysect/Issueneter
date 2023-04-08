@@ -1,5 +1,4 @@
 using Hangfire;
-using Issueneter.ApiModels.Responses;
 using Issueneter.Domain.Models;
 using Issueneter.Filters;
 using Issueneter.Host.Composition;
@@ -7,6 +6,7 @@ using Issueneter.Host.Requests;
 using Issueneter.Host.TempDirecory;
 using Issueneter.Persistence;
 using Issueneter.Telegram;
+using Issueneter.Telegram.Formatters;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -52,8 +52,8 @@ var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
 
 services
-    .AddSingleton<IMessageFormatter<Issue>>()
-    .AddSingleton<IMessageFormatter<PullRequest>>();
+    .AddSingleton<IMessageFormatter<Issue>, IssueMessageFormatter>()
+    .AddSingleton<IMessageFormatter<PullRequest>, PullRequestMessageFormatter>();
 
 services
     .AddDbRelated(builder.Configuration)
@@ -76,8 +76,8 @@ var availables = new Dictionary<string, Available[]>
 
 app.MapGet("/available_sources", () => availables).WithOpenApi();
 
-app.MapGet("/scans", async (ScanStore store) => await GetScans(store)).WithOpenApi();
-app.MapGet("/scan/{id}", async (int id, ScanStore store) =>
+app.MapGet("/scans", async (ScanStorage store) => await GetScans(store)).WithOpenApi();
+app.MapGet("/scan/{id}", async (int id, ScanStorage store) =>
 {
     var scan = await GetScan(store, id);
     if (scan is not null)
@@ -86,26 +86,29 @@ app.MapGet("/scan/{id}", async (int id, ScanStore store) =>
     return Results.NotFound();
 }).WithOpenApi();
 
-app.MapPost("/{source}/scan", async (string source, ScanStore store, [FromBody] AddNewRepoScanRequest request) =>
+app.MapPost("/{source}/scan", async (string source, ScanStorage store, [FromBody] AddNewRepoScanRequest request) =>
 {
     // TODO: Засурсгенить
     if (source.ToLowerInvariant() == "pullrequest")
     {
         var repoFilters = JsonConvert.DeserializeObject<IFilter<PullRequest>>(request.Filters, new JsonFilterConverter<PullRequest>());
         var creation = new ScanCreation(ScanType.PullRequest, request.Owner, request.Repo, request.Filters);
-        await store.CreateNewScan(creation);
+        var scanId = await store.CreateNewScan(creation);
+        
+        RecurringJob.AddOrUpdate(scanId.ToString(), () => Console.WriteLine("Hello world"), "* * * * *");
+        return Results.Ok();
     }
 
     return Results.NotFound();
 }).WithOpenApi();
 app.Run();
 
-async Task<IReadOnlyCollection<int>> GetScans(ScanStore store)
+async Task<IReadOnlyCollection<int>> GetScans(ScanStorage store)
 {
     return await store.GetAllScansIds();
 }
 
-async Task<ScanResponse?> GetScan(ScanStore store, int id)
+async Task<ScanEntry?> GetScan(ScanStorage store, int id)
 {
     return await store.GetScan(id);
 }

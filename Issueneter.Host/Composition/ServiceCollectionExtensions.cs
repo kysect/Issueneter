@@ -12,7 +12,7 @@ public static class ServiceCollectionExtensions
         => services
             .AddSingleton<IDbConnectionFactory, DbConnectionFactory>()
             .Configure<DatabaseOptions>(configuration.GetSection(nameof(DatabaseOptions)))
-            .AddSingleton<ScanStore>();
+            .AddSingleton<ScanStorage>();
 
     public static IServiceCollection AddHangfireRelated(this IServiceCollection services)
         => services
