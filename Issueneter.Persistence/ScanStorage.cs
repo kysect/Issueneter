@@ -18,7 +18,7 @@ public class ScanStorage
         using var connection = _connectionFactory.GetConnection();
         return (await connection.QueryAsync<int>(query)).AsList();
     }
-    public async Task<ScanEntry?> GetScan(int scanId)
+    public async Task<ScanEntry?> GetScan(long scanId)
     {
         const string query = @"
             SELECT id, scan_type as Type, owner, repo, filters FROM issueneter.scans

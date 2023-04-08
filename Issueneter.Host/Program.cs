@@ -5,6 +5,7 @@ using Issueneter.Host.Composition;
 using Issueneter.Host.Requests;
 using Issueneter.Host.TempDirecory;
 using Issueneter.Persistence;
+using Issueneter.Runner;
 using Issueneter.Telegram;
 using Issueneter.Telegram.Formatters;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -95,7 +96,7 @@ app.MapPost("/{source}/scan", async (string source, ScanStorage store, [FromBody
         var creation = new ScanCreation(ScanType.PullRequest, request.Owner, request.Repo, request.Filters);
         var scanId = await store.CreateNewScan(creation);
         
-        RecurringJob.AddOrUpdate(scanId.ToString(), () => Console.WriteLine("Hello world"), "* * * * *");
+        RecurringJob.AddOrUpdate<ScanRunner>(scanId.ToString(), (runner) => runner.Run(scanId), "3 * * * *");
         return Results.Ok();
     }
 
