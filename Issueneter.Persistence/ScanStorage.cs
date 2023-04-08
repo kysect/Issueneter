@@ -18,10 +18,10 @@ public class ScanStorage
         using var connection = _connectionFactory.GetConnection();
         return (await connection.QueryAsync<int>(query)).AsList();
     }
-    public async Task<ScanEntry?> GetScan(int scanId)
+    public async Task<ScanEntry?> GetScan(long scanId)
     {
         const string query = @"
-            SELECT id, scan_type as Type, owner, repo, filters FROM issueneter.scans
+            SELECT id, scan_type as ScanType, owner, repo, chat_id AS ChatId, filters FROM issueneter.scans
             WHERE id = @id";
 
         var @params = new {id = scanId}; 
@@ -33,8 +33,8 @@ public class ScanStorage
     {
         const string query = @"
             INSERT INTO issueneter.scans
-            (scan_type, owner, repo, created, filters)
-            VALUES (@type, @acc, @repo, now(), to_json(@filters))
+            (scan_type, owner, repo, chat_id, created, filters)
+            VALUES (@type, @acc, @repo, @chat, now(), to_json(@filters))
             RETURNING id";
 
         var @params = new
@@ -42,6 +42,7 @@ public class ScanStorage
             type = (int)creation.Type,
             acc = creation.Owner,
             repo = creation.Repo,
+            chat = creation.ChatId,
             filters = creation.Filters
         };
         

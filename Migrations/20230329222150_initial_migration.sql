@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS issueneter.scans (
     scan_type SMALLINT NOT NULL,
     owner varchar NOT NULL,
     repo varchar NULL,
+    chat_id bigint NOT NULL,
     created TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     filters JSON NOT NULL
 );

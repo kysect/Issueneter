@@ -8,19 +8,17 @@ namespace Issueneter.Telegram;
 public class TelegramSender
 {
     private readonly TelegramBotClient _botClient;
-    private readonly IMessageFormatter<IFilterable> _messageFormatter;
 
-    public TelegramSender(TelegramBotClient botClient, IMessageFormatter<IFilterable> messageFormatter)
+    public TelegramSender(TelegramBotClient botClient)
     {
         _botClient = botClient;
-        _messageFormatter = messageFormatter;
     }
 
-    public async Task SendResults<T>(ChatId chat, IReadOnlyCollection<T> results) where T : IFilterable
+    public async Task SendResults<T>(ChatId chat, IMessageFormatter<T> formatter, IReadOnlyCollection<T> results) where T : IFilterable
     {
         foreach (var result in results)
         {
-            var message = _messageFormatter.ToMessage(result);
+            var message = formatter.ToMessage(result);
             await _botClient.SendTextMessageAsync(chat, message, ParseMode.Markdown);
         }
     }

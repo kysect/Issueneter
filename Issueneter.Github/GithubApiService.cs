@@ -33,7 +33,7 @@ public class GithubApiService
                 .Select(i => new Issue(
                     i.Title,
                     i.User.Login,
-                    i.Url,
+                    i.HtmlUrl,
                     i.GetState(),
                     i.Labels.Select(l => l.Name).ToList(),
                     new Ref<List<TimelineEvent>>(() => GetActivity(since, source, i.Number))))
@@ -54,7 +54,7 @@ public class GithubApiService
                 .Select(pr => new PullRequest(
                     pr.Title,
                     pr.User.Login,
-                    pr.Url,
+                    pr.HtmlUrl,
                     pr.GetState(),
                     pr.Labels.Select(l => l.Name).ToList(),
                     new Ref<List<TimelineEvent>>(() => GetActivity(since, source, pr.Number))))
