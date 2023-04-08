@@ -6,6 +6,6 @@ public class IssueMessageFormatter : IMessageFormatter<Issue>
 {
     public string ToMessage(Issue entity)
     {
-        return $"изи (ишуя)[{entity.Url}]";
+        return $"изи [ишуя]({entity.Url})";
     }
 }
