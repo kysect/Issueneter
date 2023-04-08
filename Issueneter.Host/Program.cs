@@ -1,10 +1,12 @@
 using Hangfire;
 using Issueneter.ApiModels.Responses;
+using Issueneter.Domain.Models;
 using Issueneter.Filters;
 using Issueneter.Host.Composition;
 using Issueneter.Host.Requests;
 using Issueneter.Host.TempDirecory;
 using Issueneter.Persistence;
+using Issueneter.Telegram;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -48,6 +50,10 @@ var parsed = JsonConvert.DeserializeObject<IFilter<PullRequest>>(json, new JsonF
 var builder = WebApplication.CreateBuilder(args);
 
 var services = builder.Services;
+
+services
+    .AddSingleton<IMessageFormatter<Issue>>()
+    .AddSingleton<IMessageFormatter<PullRequest>>();
 
 services
     .AddDbRelated(builder.Configuration)
