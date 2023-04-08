@@ -4,11 +4,11 @@ using Issueneter.ApiModels.Responses;
 
 namespace Issueneter.Persistence;
 
-public class ScanStore
+public class ScanStorage
 {
     private readonly IDbConnectionFactory _connectionFactory;
 
-    public ScanStore(IDbConnectionFactory connectionFactory)
+    public ScanStorage(IDbConnectionFactory connectionFactory)
     {
         _connectionFactory = connectionFactory;
     }

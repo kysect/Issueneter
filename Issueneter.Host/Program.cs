@@ -77,8 +77,8 @@ var availables = new Dictionary<string, Available[]>
 
 app.MapGet("/available_sources", () => availables).WithOpenApi();
 
-app.MapGet("/scans", async (ScanStore store) => await GetScans(store)).WithOpenApi();
-app.MapGet("/scan/{id}", async (int id, ScanStore store) =>
+app.MapGet("/scans", async (ScanStorage store) => await GetScans(store)).WithOpenApi();
+app.MapGet("/scan/{id}", async (int id, ScanStorage store) =>
 {
     var scan = await GetScan(store, id);
     if (scan is not null)
@@ -87,7 +87,7 @@ app.MapGet("/scan/{id}", async (int id, ScanStore store) =>
     return Results.NotFound();
 }).WithOpenApi();
 
-app.MapPost("/{source}/scan", async (string source, ScanStore store, [FromBody] AddNewRepoScanRequest request) =>
+app.MapPost("/{source}/scan", async (string source, ScanStorage store, [FromBody] AddNewRepoScanRequest request) =>
 {
     // TODO: Засурсгенить
     if (source.ToLowerInvariant() == "pullrequest")
@@ -102,12 +102,12 @@ app.MapPost("/{source}/scan", async (string source, ScanStore store, [FromBody] 
 }).WithOpenApi();
 app.Run();
 
-async Task<IReadOnlyCollection<int>> GetScans(ScanStore store)
+async Task<IReadOnlyCollection<int>> GetScans(ScanStorage store)
 {
     return await store.GetAllScansIds();
 }
 
-async Task<ScanResponse?> GetScan(ScanStore store, int id)
+async Task<ScanResponse?> GetScan(ScanStorage store, int id)
 {
     return await store.GetScan(id);
 }
