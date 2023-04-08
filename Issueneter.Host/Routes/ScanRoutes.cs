@@ -2,7 +2,7 @@
 using Issueneter.Domain.Models;
 using Issueneter.Filters;
 using Issueneter.Host.Requests;
-using Issueneter.Host.TempDirecory;
+using Issueneter.Json;
 using Issueneter.Persistence;
 using Issueneter.Runner;
 using Microsoft.AspNetCore.Mvc;
@@ -16,8 +16,9 @@ public static class ScanRoutes
     {
         app.MapGet("/scans", async (ScanStorage store) => await GetScans(store)).WithOpenApi();
         app.MapGet("/scan/{id}", async (long id, ScanStorage store) => await GetScan(store, id)).WithOpenApi();
-        app.MapPost("/{source}/scan", async (string source, ScanStorage store, [FromBody] AddNewRepoScanRequest request) => CreateScan(store, source, request)).WithOpenApi();
-        app.MapPost("/scan/{id}/force", async (ScanRunner runner, long scanId) => ForceScan(runner, scanId)).WithOpenApi();
+        app.MapPost("/{source}/scan", async (string source, ScanStorage store, [FromBody] AddNewRepoScanRequest request) 
+            => await CreateScan(store, source, request)).WithOpenApi();
+        app.MapPost("/scan/{id}/force", async (ScanRunner runner, long scanId) => await ForceScan(runner, scanId)).WithOpenApi();
 
         return app;
     }

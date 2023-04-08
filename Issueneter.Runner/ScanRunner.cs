@@ -2,7 +2,7 @@
 using Issueneter.Domain.Models;
 using Issueneter.Filters;
 using Issueneter.Github;
-using Issueneter.Host.TempDirecory;
+using Issueneter.Json;
 using Issueneter.Persistence;
 using Issueneter.Telegram;
 using Issueneter.Telegram.Formatters;
@@ -26,7 +26,10 @@ public class ScanRunner
     public async Task Run(long scanId)
     {
         var scan = await _storage.GetScan(scanId);
-
+        
+        if (scan is null)
+            return;
+        
         var source = new ActivitySource(scan.Owner, scan.Repo);
         if (scan.ScanType == 1)
         {

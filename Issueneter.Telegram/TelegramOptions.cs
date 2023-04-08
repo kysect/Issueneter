@@ -1,4 +1,4 @@
-﻿namespace Issueneter.Host.Options;
+﻿namespace Issueneter.Telegram;
 
 public class TelegramOptions
 {

@@ -1,7 +1,7 @@
 ﻿using Hangfire;
 using Hangfire.PostgreSql;
 using Issueneter.Host.Composition;
-using Issueneter.Host.Options;
+using Issueneter.Persistence;
 
 namespace Issueneter.Host.Modules;
 

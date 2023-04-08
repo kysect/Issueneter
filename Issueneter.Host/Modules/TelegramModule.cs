@@ -1,5 +1,4 @@
 ﻿using Issueneter.Host.Composition;
-using Issueneter.Host.Options;
 using Issueneter.Telegram;
 using Telegram.Bot;
 

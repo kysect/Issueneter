@@ -1,6 +1,5 @@
 ﻿using Issueneter.Github;
 using Issueneter.Host.Composition;
-using Issueneter.Host.Options;
 using Octokit;
 
 namespace Issueneter.Host.Modules;
