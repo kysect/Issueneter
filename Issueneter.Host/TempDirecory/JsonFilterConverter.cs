@@ -1,4 +1,6 @@
-﻿using Issueneter.Domain;
+﻿using System.Collections;
+using System.Reflection;
+using Issueneter.Domain;
 using Issueneter.Filters;
 using Issueneter.Filters.PredefinedFilters;
 using Newtonsoft.Json;
@@ -9,7 +11,7 @@ using PullRequest = Issueneter.Domain.Models.PullRequest;
 
 namespace Issueneter.Host.TempDirecory;
 
-public class JsonFilterConverter<T> : JsonConverter where T : IFilterable
+public class JsonFilterConverter<T> : JsonConverter<IFilter<T>> where T : IFilterable
 {
     public object Create(JObject jObject)
     {
@@ -34,16 +36,9 @@ public class JsonFilterConverter<T> : JsonConverter where T : IFilterable
         throw new Exception("");
     }
 
-    public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+    public override void WriteJson(JsonWriter writer, IFilter<T> value, JsonSerializer serializer)
     {
-        var jToken = JToken.FromObject(value, serializer);
-
-        if (jToken.Type != JTokenType.Object || value is not IFilter<T>)
-        {
-            jToken.WriteTo(writer);
-        }
-
-        var jObject = (JObject)jToken;
+        var jObject = new JObject();
         var type = value switch
         {
             ComplexFilter<T> complexFilter => complexFilter.Operand == ComplexOperand.And ? "and" : "or",
@@ -54,19 +49,37 @@ public class JsonFilterConverter<T> : JsonConverter where T : IFilterable
             _ => throw new ArgumentOutOfRangeException(nameof(value),"")
         };
         jObject.AddFirst(new JProperty("Type", type));
-        jObject.WriteTo(writer);
+
+        Type valueType = value.GetType();
+        if (valueType.IsArray)
+        {
+            var jArray = new JArray();
+            foreach (var item in (IEnumerable)value)
+                jArray.Add(JToken.FromObject(item, serializer));
+
+            jArray.WriteTo(writer);
+        }
+        else
+        {
+            foreach (PropertyInfo property in valueType.GetProperties(BindingFlags.Public | BindingFlags.Instance))
+            {
+                if (property.CanRead)
+                {
+                    object propertyValue = property.GetValue(value);
+                    if (propertyValue != null)
+                        jObject.Add(property.Name, JToken.FromObject(propertyValue, serializer));
+                }
+            }
+
+            jObject.WriteTo(writer);
+        }
     }
 
-    public override IFilter<T> ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+    public override IFilter<T> ReadJson(JsonReader reader, Type objectType, IFilter<T> existingValue, bool hasExistingValue, JsonSerializer serializer)
     {
         JObject jObject = JObject.Load(reader);
         var target = Create(jObject);
         serializer.Populate(jObject.CreateReader(), target);
         return (IFilter<T>)target;
-    }
-
-    public override bool CanConvert(Type objectType)
-    {
-        return typeof(IFilter<T>).IsAssignableFrom(objectType);
     }
 }
