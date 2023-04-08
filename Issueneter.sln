@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Issueneter.WebAPI", "Issueneter.WebAPI\Issueneter.WebAPI.fsproj", "{7F7851A3-E5C0-4159-975A-36B15A1A6E1F}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Issueneter.WebAPI", "Old\Issueneter.WebAPI\Issueneter.WebAPI.fsproj", "{7F7851A3-E5C0-4159-975A-36B15A1A6E1F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Issueneter.Host", "Issueneter.Host\Issueneter.Host.csproj", "{00CBCA5E-6EEB-40FD-948D-90B72BDE0E34}"
 EndProject
@@ -11,6 +11,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Issueneter.Github", "Issueneter.Github\Issueneter.Github.csproj", "{D8329DFE-8300-4537-A44D-013562DF8C54}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Issueneter.Domain", "Issueneter.Domain\Issueneter.Domain.csproj", "{6DA5A4BF-4BFE-4F95-844B-E1E03CFF76B6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Issueneter.Persistence", "Issueneter.Persistence\Issueneter.Persistence.csproj", "{EC86C9CF-504B-4C74-8CE7-C014563A8286}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Issueneter.Filters", "Issueneter.Filters\Issueneter.Filters.csproj", "{EF54A4A9-3C78-4858-82A3-86245BCCBDDD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,6 +42,14 @@ Global
 		{6DA5A4BF-4BFE-4F95-844B-E1E03CFF76B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6DA5A4BF-4BFE-4F95-844B-E1E03CFF76B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6DA5A4BF-4BFE-4F95-844B-E1E03CFF76B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC86C9CF-504B-4C74-8CE7-C014563A8286}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC86C9CF-504B-4C74-8CE7-C014563A8286}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC86C9CF-504B-4C74-8CE7-C014563A8286}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC86C9CF-504B-4C74-8CE7-C014563A8286}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF54A4A9-3C78-4858-82A3-86245BCCBDDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF54A4A9-3C78-4858-82A3-86245BCCBDDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF54A4A9-3C78-4858-82A3-86245BCCBDDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF54A4A9-3C78-4858-82A3-86245BCCBDDD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{7F7851A3-E5C0-4159-975A-36B15A1A6E1F} = {E5EE3473-EE1B-4C38-B680-5CD238226CEF}

@@ -14,17 +14,26 @@
       <Content Update="appsettings.local.json">
         <DependentUpon>appsettings.json</DependentUpon>
       </Content>
+      <Content Update="appsettings.Development.json">
+        <DependentUpon>appsettings.json</DependentUpon>
+      </Content>
     </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="Hangfire.AspNetCore" Version="1.8.0-rc2" />
       <PackageReference Include="Hangfire.NetCore" Version="1.8.0-rc2" />
       <PackageReference Include="Hangfire.PostgreSql" Version="1.19.12" />
+      <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.4" />
+      <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.5.0" />
+      <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.5.0" />
+      <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.5.0" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\Issueneter.ApiModels\Issueneter.ApiModels.fsproj" />
+      <ProjectReference Include="..\Issueneter.Filters\Issueneter.Filters.csproj" />
       <ProjectReference Include="..\Issueneter.Github\Issueneter.Github.csproj" />
+      <ProjectReference Include="..\Issueneter.Persistence\Issueneter.Persistence.csproj" />
     </ItemGroup>
 
 </Project>

@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS issueneter.scans (
     id SERIAL NOT NULL
         CONSTRAINT scan_pkey PRIMARY KEY,
     scan_type SMALLINT NOT NULL,
-    accOrOrg varchar NOT NULL,
+    owner varchar NOT NULL,
     repo varchar NULL,
     created TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     filters JSON NOT NULL

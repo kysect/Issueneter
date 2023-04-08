@@ -2,7 +2,7 @@ using Issueneter.Domain.Utility;
 
 namespace Issueneter.Domain.Models;
 
-public class PullRequest
+public class PullRequest : IFilterable
 {
     public PullRequest(string title, string author, string url, IReadOnlyList<string> labels, Ref<List<TimelineEvent>> events)
     {

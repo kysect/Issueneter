@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace Issueneter.Domain.Utility;
 
 public class Ref<T>
