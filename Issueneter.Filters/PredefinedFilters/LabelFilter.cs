@@ -33,6 +33,14 @@ public class LabelFilter : IFilter<Issue>, IFilter<PullRequest>
 
     public bool Apply(PullRequest entity)
     {
-        throw new NotImplementedException();
+        var checkEvents = Operand == LabelOperand.Any 
+            ? Labels.Any(l => entity.Labels.Contains(l)) 
+            : Labels.All(l => entity.Labels.Contains(l));
+        
+        if (!checkEvents)
+            return false;
+        
+        var events = entity.Events.Load().GetAwaiter().GetResult();
+        return events.Any(e => e is LabeledEvent le && Labels.Contains(le.Label));
     }
 }
