@@ -1,5 +1,4 @@
 ﻿using Dapper;
-using Issueneter.ApiModels.Requests;
 using Issueneter.ApiModels.Responses;
 
 namespace Issueneter.Persistence;
