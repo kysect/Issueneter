@@ -6,7 +6,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Include="Requests.fs" />
         <Compile Include="Responses.fs" />
     </ItemGroup>
 

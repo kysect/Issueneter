@@ -1,6 +1,4 @@
 ﻿using Issueneter.Domain;
-using Issueneter.Domain.Models;
-using Issueneter.Github;
 
 namespace Issueneter.Filters.PredefinedFilters;
 
