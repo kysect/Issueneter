@@ -4,12 +4,9 @@ namespace Issueneter.Filters.PredefinedFilters;
 
 public class AuthorFilter : IFilter<Issue>, IFilter<PullRequest>
 {
-    public string Value { get; set; }
+    public AuthorFilter() { }
 
-    public AuthorFilter()
-    {
-        
-    }
+    public string Value { get; set; }
 
     public bool Apply(Issue entity)
     {

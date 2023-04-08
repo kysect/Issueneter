@@ -4,20 +4,20 @@ namespace Issueneter.Filters.PredefinedFilters;
 
 public class StateFilter : IFilter<PullRequest>, IFilter<Issue>
 {
-    private readonly int _value;
-
     public StateFilter(int value)
     {
-        _value = value;
+        Value = value;
     }
 
+    public int Value { get; set; }
+    
     public bool Apply(PullRequest entity)
     {
-        return true;
+        return (int)entity.State == Value;
     }
-
+    
     public bool Apply(Issue entity)
     {
-        return true;
+        return (int)entity.State == Value;
     }
 }
