@@ -5,18 +5,18 @@ using Telegram.Bot.Types.Enums;
 
 namespace Issueneter.Telegram;
 
-public class TelegramSender<T> where T : IFilterable
+public class TelegramSender
 {
     private readonly TelegramBotClient _botClient;
-    private readonly IMessageFormatter<T> _messageFormatter;
+    private readonly IMessageFormatter<IFilterable> _messageFormatter;
 
-    public TelegramSender(TelegramBotClient botClient, IMessageFormatter<T> messageFormatter)
+    public TelegramSender(TelegramBotClient botClient, IMessageFormatter<IFilterable> messageFormatter)
     {
         _botClient = botClient;
         _messageFormatter = messageFormatter;
     }
 
-    public async Task SendResults(ChatId chat, IReadOnlyCollection<T> results)
+    public async Task SendResults<T>(ChatId chat, IReadOnlyCollection<T> results) where T : IFilterable
     {
         foreach (var result in results)
         {
