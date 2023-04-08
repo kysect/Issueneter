@@ -7,6 +7,7 @@ using Issueneter.Host.Requests;
 using Issueneter.Host.TempDirecory;
 using Issueneter.Persistence;
 using Issueneter.Telegram;
+using Issueneter.Telegram.Formatters;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -52,8 +53,8 @@ var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
 
 services
-    .AddSingleton<IMessageFormatter<Issue>>()
-    .AddSingleton<IMessageFormatter<PullRequest>>();
+    .AddSingleton<IMessageFormatter<Issue>, IssueMessageFormatter>()
+    .AddSingleton<IMessageFormatter<PullRequest>, PullRequestMessageFormatter>();
 
 services
     .AddDbRelated(builder.Configuration)
@@ -94,6 +95,7 @@ app.MapPost("/{source}/scan", async (string source, ScanStore store, [FromBody] 
         var repoFilters = JsonConvert.DeserializeObject<IFilter<PullRequest>>(request.Filters, new JsonFilterConverter<PullRequest>());
         var creation = new ScanCreation(ScanType.PullRequest, request.Owner, request.Repo, request.Filters);
         await store.CreateNewScan(creation);
+        return Results.Ok();
     }
 
     return Results.NotFound();

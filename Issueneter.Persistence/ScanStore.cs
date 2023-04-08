@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Hangfire;
 using Issueneter.ApiModels.Requests;
 using Issueneter.ApiModels.Responses;
 
@@ -31,12 +32,13 @@ public class ScanStore
         return await connection.QuerySingleOrDefaultAsync<ScanResponse>(query, @params);
     }
 
-    public Task CreateNewScan(ScanCreation creation)
+    public async Task CreateNewScan(ScanCreation creation)
     {
         const string query = @"
             INSERT INTO issueneter.scans
             (scan_type, owner, repo, created, filters)
-            VALUES (@type, @acc, @repo, now(), to_json(@filters))";
+            VALUES (@type, @acc, @repo, now(), to_json(@filters))
+            RETURNING id";
 
         var @params = new
         {
@@ -47,7 +49,10 @@ public class ScanStore
         };
         
         var connection = _connectionFactory.GetConnection();
+        
+        var id = await connection.ExecuteScalarAsync<int>(query, @params);
 
-        return connection.ExecuteAsync(query, @params);
+        var jobId = $"scan-{id}";
+        RecurringJob.AddOrUpdate(jobId, () => Console.WriteLine("Hello world!"), "15 * * * * *");
     }
 }
