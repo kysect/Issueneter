@@ -22,7 +22,6 @@ public class GithubApiService
         var request = new RepositoryIssueRequest()
         {
             Since = since,
-            State = ItemStateFilter.Open,
             SortProperty = IssueSort.Updated,
             SortDirection = SortDirection.Descending
         };
@@ -35,6 +34,7 @@ public class GithubApiService
                     i.Title,
                     i.User.Login,
                     i.Url,
+                    i.GetState(),
                     i.Labels.Select(l => l.Name).ToList(),
                     new Ref<List<TimelineEvent>>(() => GetActivity(since, source, i.Number))))
                 .ToList();
@@ -44,7 +44,6 @@ public class GithubApiService
     {
         var request = new PullRequestRequest()
         {
-            State = ItemStateFilter.Open,
             SortProperty = PullRequestSort.Updated,
             SortDirection = SortDirection.Descending
         };
@@ -56,6 +55,7 @@ public class GithubApiService
                     pr.Title,
                     pr.User.Login,
                     pr.Url,
+                    pr.GetState(),
                     pr.Labels.Select(l => l.Name).ToList(),
                     new Ref<List<TimelineEvent>>(() => GetActivity(since, source, pr.Number))))
                 .ToList();
