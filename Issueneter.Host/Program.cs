@@ -94,7 +94,9 @@ app.MapPost("/{source}/scan", async (string source, ScanStorage store, [FromBody
     {
         var repoFilters = JsonConvert.DeserializeObject<IFilter<PullRequest>>(request.Filters, new JsonFilterConverter<PullRequest>());
         var creation = new ScanCreation(ScanType.PullRequest, request.Owner, request.Repo, request.Filters);
-        await store.CreateNewScan(creation);
+        var scanId = await store.CreateNewScan(creation);
+        
+        RecurringJob.AddOrUpdate(scanId.ToString(), () => Console.WriteLine("Hello world"), "* * * * *");
         return Results.Ok();
     }
 

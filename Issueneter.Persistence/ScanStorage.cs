@@ -20,7 +20,7 @@ public class ScanStorage
         using var connection = _connectionFactory.GetConnection();
         return (await connection.QueryAsync<int>(query)).AsList();
     }
-    public async Task<ScanResponse?> GetScan(int scanId)
+    public async Task<ScanEntry?> GetScan(int scanId)
     {
         const string query = @"
             SELECT id, scan_type as Type, owner, repo, filters FROM issueneter.scans
@@ -28,10 +28,10 @@ public class ScanStorage
 
         var @params = new {id = scanId}; 
         using var connection = _connectionFactory.GetConnection();
-        return await connection.QuerySingleOrDefaultAsync<ScanResponse>(query, @params);
+        return await connection.QuerySingleOrDefaultAsync<ScanEntry>(query, @params);
     }
 
-    public async Task CreateNewScan(ScanCreation creation)
+    public async Task<long> CreateNewScan(ScanCreation creation)
     {
         const string query = @"
             INSERT INTO issueneter.scans
@@ -49,9 +49,6 @@ public class ScanStorage
         
         var connection = _connectionFactory.GetConnection();
         
-        var id = await connection.ExecuteScalarAsync<int>(query, @params);
-
-        var jobId = $"scan-{id}";
-        RecurringJob.AddOrUpdate(jobId, () => Console.WriteLine("Hello world!"), "15 * * * * *");
+        return await connection.ExecuteScalarAsync<int>(query, @params);
     }
 }
