@@ -10,11 +10,6 @@ public enum LabelOperand
 
 public class LabelFilter : IFilter<Issue>, IFilter<PullRequest>
 {
-    public LabelFilter(List<string> labels)
-    {
-        Labels = labels;
-    }
-
     public List<string> Labels { get; set; }
     public LabelOperand Operand { get; set; }
     

@@ -4,11 +4,6 @@ namespace Issueneter.Filters.PredefinedFilters;
 
 public class StateFilter : IFilter<PullRequest>, IFilter<Issue>
 {
-    public StateFilter(int value)
-    {
-        Value = value;
-    }
-
     public int Value { get; set; }
     
     public bool Apply(PullRequest entity)

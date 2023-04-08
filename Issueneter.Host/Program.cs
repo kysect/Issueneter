@@ -47,6 +47,7 @@ var json = """
 
 
 var parsed = JsonConvert.DeserializeObject<IFilter<PullRequest>>(json, new JsonFilterConverter<PullRequest>());
+var newJson = JsonConvert.SerializeObject(parsed, new JsonFilterConverter<PullRequest>());
 
 var builder = WebApplication.CreateBuilder(args);
 
