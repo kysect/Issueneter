@@ -14,18 +14,18 @@ public static class ScanRoutes
 {
     public static WebApplication MapScanRoutes(this WebApplication app)
     {
-        app.MapGet("/scans", async (ScanStorage store) => await GetScans(store)).WithOpenApi();
-        app.MapGet("/scan/{id}", async (long id, ScanStorage store) => await GetScan(store, id)).WithOpenApi();
-        app.MapPost("/{source}/scan", async (string source, ScanStorage store, [FromBody] AddNewRepoScanRequest request) 
-            => await CreateScan(store, source, request)).WithOpenApi();
+        app.MapGet("/scans", async (ScanStorage storage) => await GetScans(storage)).WithOpenApi();
+        app.MapGet("/scan/{id}", async (long id, ScanStorage storage) => await GetScan(storage, id)).WithOpenApi();
+        app.MapPost("/{source}/scan", async (string source, ScanStorage storage, [FromBody] AddNewRepoScanRequest request) 
+            => await CreateScan(storage, source, request)).WithOpenApi();
         app.MapPost("/scan/{id}/force", async (ScanRunner runner, long scanId) => await ForceScan(runner, scanId)).WithOpenApi();
 
         return app;
     }
 
-    private static async Task<IResult> GetScans(ScanStorage store)
+    private static async Task<IResult> GetScans(ScanStorage storage)
     {
-        return Results.Ok(await store.GetAllScansIds());
+        return Results.Ok(await storage.GetAllScansIds());
     }
 
     private static async Task<IResult> GetScan(ScanStorage storage, long scanId)
@@ -44,14 +44,14 @@ public static class ScanRoutes
         return Results.Ok();
     }
     
-    private static async Task<IResult> CreateScan(ScanStorage store, string source, AddNewRepoScanRequest request)
+    private static async Task<IResult> CreateScan(ScanStorage storage, string source, AddNewRepoScanRequest request)
     {
         // TODO: Засурсгенить
         if (source.ToLowerInvariant() == "issue")
         {
             var repoFilters = JsonConvert.DeserializeObject<IFilter<Issue>>(request.Filters, new JsonFilterConverter<Issue>());
             var creation = new ScanCreation(ScanType.Issue, request.Owner, request.Repo, request.ChatId, request.Filters);
-            var scanId = await store.CreateNewScan(creation);
+            var scanId = await storage.CreateNewScan(creation);
         
             RecurringJob.AddOrUpdate<ScanRunner>(scanId.ToString(), (runner) => runner.Run(scanId), "* * * * *");
             return Results.Ok();
