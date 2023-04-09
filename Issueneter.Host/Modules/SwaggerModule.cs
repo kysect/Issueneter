@@ -4,8 +4,7 @@ namespace Issueneter.Host.Modules;
 
 public static class SwaggerModule
 {
-    public static IServiceCollection AddSwaggerModule(this IServiceCollection services, IHostEnvironment env,
-        IConfigurationRoot configuration)
+    public static IServiceCollection AddSwaggerModule(this IServiceCollection services, IHostEnvironment env, IConfigurationRoot configuration)
         => services
             .AddEndpointsApiExplorer()
             .AddSwaggerGen();
