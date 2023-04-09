@@ -6,7 +6,7 @@ using Issueneter.Filters.PredefinedFilters;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace Issueneter.Host.TempDirecory;
+namespace Issueneter.Json;
 
 public class JsonFilterConverter<T> : JsonConverter<IFilter<T>> where T : IFilterable
 {
@@ -58,14 +58,14 @@ public class JsonFilterConverter<T> : JsonConverter<IFilter<T>> where T : IFilte
         }
         else
         {
-            foreach (PropertyInfo property in valueType.GetProperties(BindingFlags.Public | BindingFlags.Instance))
+            foreach (var property in valueType.GetProperties(BindingFlags.Public | BindingFlags.Instance))
             {
-                if (property.CanRead)
-                {
-                    object propertyValue = property.GetValue(value);
-                    if (propertyValue != null)
-                        jObject.Add(property.Name, JToken.FromObject(propertyValue, serializer));
-                }
+                if (!property.CanRead) 
+                    continue;
+                
+                var propertyValue = property.GetValue(value);
+                if (propertyValue != null)
+                    jObject.Add(property.Name, JToken.FromObject(propertyValue, serializer));
             }
 
             jObject.WriteTo(writer);

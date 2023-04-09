@@ -1,4 +1,4 @@
-﻿namespace Issueneter.Host.Options;
+﻿namespace Issueneter.Github;
 
 public class GithubOptions
 {
