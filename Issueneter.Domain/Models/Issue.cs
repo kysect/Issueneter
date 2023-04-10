@@ -1,3 +1,4 @@
+using Issueneter.Annotation;
 using Issueneter.Domain.Utility;
 
 namespace Issueneter.Domain.Models;
@@ -21,7 +22,7 @@ public class Issue : IFilterable
         Labels = labels;
         Events = events;
     }
-
+    
     public string Title { get; init; }
     public string Author { get; init; }
     public string Url { get; init; }

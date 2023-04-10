@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using System.Reflection;
-using Issueneter.Domain;
+using Issueneter.Annotation;
 using Issueneter.Filters;
 using Issueneter.Filters.PredefinedFilters;
 using Newtonsoft.Json;

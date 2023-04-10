@@ -6,4 +6,8 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+        <ProjectReference Include="..\Generations\Issueneter.Annotation\Issueneter.Annotation.csproj" />
+        <ProjectReference Include="..\Generations\Issueneter.ScanSourcesGenerator\Issueneter.ScanSourcesGenerator.csproj" />
+    </ItemGroup>
 </Project>

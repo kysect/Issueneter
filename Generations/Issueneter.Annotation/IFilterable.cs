@@ -1,4 +1,4 @@
-﻿namespace Issueneter.Domain;
+﻿namespace Issueneter.Annotation;
 
 public interface IFilterable
 {
