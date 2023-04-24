@@ -23,8 +23,10 @@ public class Issue : IFilterable
         Events = events;
     }
     
+    [ScanPublic("Aboba")]
     public string Title { get; init; }
     public string Author { get; init; }
+    [ScanInternal]
     public string Url { get; init; }
     public IssueState State { get; init; }
     public IReadOnlyList<string> Labels { get; init; }

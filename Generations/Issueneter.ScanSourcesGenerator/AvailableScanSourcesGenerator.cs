@@ -1,8 +1,5 @@
-﻿using System.Diagnostics;
-using System.Text;
-using Issueneter.Annotation;
+﻿using System.Text;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 
 namespace Issueneter.ScanSourcesGenerator;
@@ -12,9 +9,6 @@ public class AvailableScanSourcesGenerator : ISourceGenerator
 {
     public void Initialize(GeneratorInitializationContext context)
     {
-        if (!Debugger.IsAttached)
-            Debugger.Launch();
-        
         context.RegisterForSyntaxNotifications(() => new ScanEntitySyntaxReceiver());
     }
 
@@ -34,11 +28,12 @@ public static class FromEntity
     public static Dictionary<string, string[]> Values { get; } = new()
     {";
         var builder = new StringBuilder(start);
+        builder.AppendLine();
         foreach (var entity in receiver.Entities)
         {
-            var name = entity.Entity.Identifier.Text;
-            var defaults = entity.Defaults.Select(k => k.Identifier.Text);
-            builder.AppendLine($"       [{name}] = new [] {{{string.Join(",", defaults)}}},");
+            var results = ScanPropertyProcessing.ToAvailableProperties(entity.Entity);
+
+            builder.AppendLine($"       [\"{results.Entity}\"] = new [] {{{string.Join(", ", results.Properties.Select(k => $"\"{k}\""))}}},");
         }
 
         if (receiver.Entities.Any())

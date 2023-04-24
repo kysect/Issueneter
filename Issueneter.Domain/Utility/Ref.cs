@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace Issueneter.Domain.Utility;
 
 public class Ref<T>
@@ -10,6 +12,7 @@ public class Ref<T>
         _loader = loader;
     }
 
+    [MemberNotNullWhen(true, nameof(_value))]
     public bool IsLoaded { get; private set; }
 
     //TODO: Synchronization
