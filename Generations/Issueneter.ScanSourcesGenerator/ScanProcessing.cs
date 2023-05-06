@@ -4,7 +4,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Issueneter.ScanSourcesGenerator;
 
-internal static class ScanPropertyProcessing
+internal static class ScanProcessing
 {
     private static readonly string ScanPublicTrigger = nameof(ScanPublicAttribute).ToLowerNoAttributePostfix();
     private static readonly string ScanInternalTrigger = nameof(ScanInternalAttribute).ToLowerNoAttributePostfix();
@@ -42,7 +42,7 @@ internal static class ScanPropertyProcessing
 
         var props = syntax
             .GetProperties()
-            .Select(k => k.GetScanPropertyName())
+            .Select(k => k.GetScanPropertyName()?.Trim())
             .Where(k => k is not null);
 
         return (entityName, props.ToArray())!;

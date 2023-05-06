@@ -7,8 +7,9 @@ namespace Issueneter.ScanSourcesGenerator;
 internal class ScanEntitySyntaxReceiver : ISyntaxReceiver
 {
     private const string TriggerInterface = nameof(IFilterable);
+    private readonly List<ClassDeclarationSyntax> _entities = new();
 
-    public List<ScanEntity> Entities { get; } = new();
+    public IReadOnlyList<ClassDeclarationSyntax> Entities => _entities;
     
     public void OnVisitSyntaxNode(SyntaxNode syntaxNode)
     {
@@ -24,8 +25,6 @@ internal class ScanEntitySyntaxReceiver : ISyntaxReceiver
         if (!baseTypes.Any(k => k.Type.ToString().Equals(TriggerInterface, StringComparison.OrdinalIgnoreCase)))
             return;
 
-        var entity = classDeclaration;
-        
-        Entities.Add(new ScanEntity(entity));
+        _entities.Add(classDeclaration);
     }
 }
