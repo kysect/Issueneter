@@ -1,7 +1,7 @@
 ﻿namespace Issueneter.Annotation;
 
 [AttributeUsage(AttributeTargets.Property)]
-public class ScanInternalAttribute : Attribute
+public class ScanIgnoreAttribute : Attribute
 {
     
 }

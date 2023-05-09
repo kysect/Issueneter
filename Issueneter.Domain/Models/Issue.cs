@@ -1,5 +1,6 @@
 using Issueneter.Annotation;
 using Issueneter.Domain.Utility;
+using Mappings;
 
 namespace Issueneter.Domain.Models;
 
@@ -22,13 +23,15 @@ public class Issue : IFilterable
         Labels = labels;
         Events = events;
     }
-    
-    [ScanPublic("Aboba")]
+
+    [ScanProperty]
     public string Title { get; init; }
+    [ScanProperty]
     public string Author { get; init; }
-    [ScanInternal]
+    [ScanIgnore]
     public string Url { get; init; }
     public IssueState State { get; init; }
     public IReadOnlyList<string> Labels { get; init; }
+    [ScanIgnore]
     public Ref<List<TimelineEvent>> Events { get; init; }
 }

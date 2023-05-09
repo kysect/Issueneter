@@ -1,9 +1,9 @@
 ﻿namespace Issueneter.Annotation;
 
 [AttributeUsage(AttributeTargets.Property)]
-public class ScanPublicAttribute : Attribute
+public class ScanPropertyAttribute : Attribute
 {
-    public ScanPublicAttribute(string? overrodeName = null)
+    public ScanPropertyAttribute(string? overrodeName = null)
     {
         OverrodeName = overrodeName;
     }

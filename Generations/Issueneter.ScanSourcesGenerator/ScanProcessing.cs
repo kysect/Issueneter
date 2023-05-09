@@ -6,9 +6,38 @@ namespace Issueneter.ScanSourcesGenerator;
 
 internal static class ScanProcessing
 {
-    private static readonly string ScanPublicTrigger = nameof(ScanPublicAttribute).ToLowerNoAttributePostfix();
-    private static readonly string ScanInternalTrigger = nameof(ScanInternalAttribute).ToLowerNoAttributePostfix();
+    private static readonly string ScanPropertyTrigger = nameof(ScanPropertyAttribute).ToLowerNoAttributePostfix();
+    private static readonly string ScanIgnoreTrigger = nameof(ScanIgnoreAttribute).ToLowerNoAttributePostfix();
 
+    public static ModelProperties ToAvailableProperties(ClassDeclarationSyntax syntax)
+    {
+        var entityName = syntax.GetClassName();
+
+        var props = syntax
+            .GetProperties()
+            .Select(k => k.GetScanPropertyName()?.Trim())
+            .Where(k => k is not null)
+            .ToArray();
+
+        return new ModelProperties(entityName, props);
+    }
+    
+    private static string? GetScanPropertyName(this PropertyDeclarationSyntax prop)
+    {
+        var attributes = prop.GetAttributes();
+        foreach (var attribute in attributes)
+        {
+            var attrName = attribute.ToLowerNoAttributePostfix();
+            if (attrName.Equals(ScanIgnoreTrigger))
+                return null;
+
+            if (attrName.Equals(ScanPropertyTrigger))
+                return GetPublicAnnotatedPropertyName(attribute, prop.GetName());
+        }
+
+        return prop.GetName();
+    }
+    
     private static string GetPublicAnnotatedPropertyName(AttributeSyntax atr, string defaultName)
     {
         var args = atr.GetArguments().ToList();
@@ -18,33 +47,5 @@ internal static class ScanProcessing
 
         var overrideName = args[0];
         return overrideName.Expression.ToFullString().Replace("\"", string.Empty);
-    }
-    
-    private static string? GetScanPropertyName(this PropertyDeclarationSyntax prop)
-    {
-        var attributes = prop.GetAttributes();
-        foreach (var attribute in attributes)
-        {
-            var attrName = attribute.ToLowerNoAttributePostfix();
-            if (attrName.Equals(ScanInternalTrigger))
-                return null;
-
-            if (attrName.Equals(ScanPublicTrigger))
-                return GetPublicAnnotatedPropertyName(attribute, attrName);
-        }
-
-        return prop.GetName();
-    }
-    
-    public static (string Entity, string[] Properties) ToAvailableProperties(ClassDeclarationSyntax syntax)
-    {
-        var entityName = syntax.GetClassName();
-
-        var props = syntax
-            .GetProperties()
-            .Select(k => k.GetScanPropertyName()?.Trim())
-            .Where(k => k is not null);
-
-        return (entityName, props.ToArray())!;
     }
 }
