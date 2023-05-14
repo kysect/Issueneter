@@ -23,8 +23,6 @@ public partial class {0} : IFilterable
 }
 ";
 
-    private static string WrapWithQuotes(string str) => $"\"{str}\"";
-    
     public static string Generate(ModelProperties model)
     {
         var stringBuilder = new StringBuilder();
@@ -32,7 +30,7 @@ public partial class {0} : IFilterable
 
         foreach (var property in model.Properties)
         {
-            stringBuilder.AppendLine($"\t\t{WrapWithQuotes(property.Name.ToLower())} => {property.FieldName}.ToString(),");
+            stringBuilder.AppendLine($"\t\t\"{property.Name.ToLower()}\" => {property.FieldName}.ToString(),");
         }
 
         stringBuilder.Append(End);
