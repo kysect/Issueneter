@@ -1,3 +1,4 @@
+using Issueneter.Annotation;
 using Issueneter.Domain.Utility;
 
 namespace Issueneter.Domain.Models;
@@ -10,7 +11,7 @@ public enum IssueState
     Closed = Completed | NotPlanned
 }
 
-public class Issue : IFilterable
+public partial class Issue : IFilterable
 {
     public Issue(string title, string author, string url, IssueState state, IReadOnlyList<string> labels, Ref<List<TimelineEvent>> events)
     {
@@ -26,6 +27,8 @@ public class Issue : IFilterable
     public string Author { get; init; }
     public string Url { get; init; }
     public IssueState State { get; init; }
+    [ScanIgnore]
     public IReadOnlyList<string> Labels { get; init; }
+    [ScanIgnore]
     public Ref<List<TimelineEvent>> Events { get; init; }
 }

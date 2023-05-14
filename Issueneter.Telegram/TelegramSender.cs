@@ -1,4 +1,5 @@
-﻿using Issueneter.Domain;
+﻿using Issueneter.Annotation;
+using Issueneter.Domain;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;

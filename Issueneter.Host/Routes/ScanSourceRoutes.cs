@@ -1,4 +1,6 @@
-﻿using Issueneter.Host.Responses;
+﻿using Issueneter.Annotation;
+using Issueneter.Host.Responses;
+using Issueneter.Mappings;
 
 namespace Issueneter.Host.Routes;
 
@@ -13,7 +15,7 @@ public static class ScanSourceRoutes
 
     public static WebApplication MapScanSourceRoutes(this WebApplication app)
     {
-        app.MapGet("/available_sources", () => Availables).WithOpenApi();
+        app.MapGet("/available_sources", () => ModelsInfo.AvailableScanSources).WithOpenApi();
 
         return app;
     }
