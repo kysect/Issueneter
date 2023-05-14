@@ -21,7 +21,7 @@ public static class ModelsInfo
     private const string End = @"
     };
 
-    public static IReadonlyCollection<ScanSource> AvailableScanSources => _availableSources;
+    public static IReadOnlyCollection<ScanSource> AvailableScanSources => _availableSources;
 }";
 
     public static string Generate(IEnumerable<ModelProperties> sources)
