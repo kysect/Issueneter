@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using Issueneter.Annotation;
 
 namespace Issueneter.ScanSourcesGenerator;
@@ -24,13 +24,15 @@ public static class ModelsInfo
     public static IReadOnlyCollection<ScanSource> AvailableScanSources => _availableSources;
 }";
 
+    private static string WrapWithQuotes(string str) => $"\"{str}\"";
+    
     public static string Generate(IEnumerable<ModelProperties> sources)
     {
         var builder = new StringBuilder();
         builder.Append(Start);
         foreach (var source in sources)
         {
-            builder.Append($"\t\tnew ScanSource(\"{source.Name}\", new List<string>(){{{string.Join(", ", source.Properties.Select(p => $"\"{p.Name}\""))}}}),\n");
+            builder.Append($"\t\tnew ScanSource({WrapWithQuotes(source.Name)}, new List<string>(){{{string.Join(", ", source.Properties.Select(p => WrapWithQuotes(p.Name)))}}}),\n");
         }
 
         builder.Append(End);
