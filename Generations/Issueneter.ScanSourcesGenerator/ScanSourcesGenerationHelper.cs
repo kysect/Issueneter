@@ -10,18 +10,18 @@ using System;
 using System.Collections.Generic;
 using Issueneter.Annotation;
 
-namespace Mappings;
+namespace Issueneter.Mappings;
 
 public static class ModelsInfo
 {
-    private static readonly List<AvailableSource> _availableScanSources = new List<AvailableScanSource>()
+    private static readonly List<ScanSource> _availableSources = new List<ScanSource>()
     {
 ";
 
     private const string End = @"
     };
 
-    public static ICollection<AvailableScanSource> AvailableScanSources => _availableSources;
+    public static ICollection<ScanSource> AvailableScanSources => _availableSources;
 }";
     
 
@@ -34,7 +34,7 @@ public static class ModelsInfo
         builder.Append(Start);
         foreach (var source in sources)
         {
-            builder.Append($"\t\tnew AvailableScanSource({WrapWithQuotes(source.Name)}, new List<string>(){{{string.Join(", ", source.Properties.Select(WrapWithQuotes))}}}),\n");
+            builder.Append($"\t\tnew ScanSource({WrapWithQuotes(source.Name)}, new List<string>(){{{string.Join(", ", source.Properties.Select(p => WrapWithQuotes(p.Name)))}}}),\n");
         }
 
         builder.Append(End);

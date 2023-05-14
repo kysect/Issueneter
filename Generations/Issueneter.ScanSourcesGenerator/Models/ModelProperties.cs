@@ -3,9 +3,9 @@ namespace Issueneter.ScanSourcesGenerator;
 public class ModelProperties
 {
     public string Name { get;}
-    public string[] Properties { get; }
+    public ModelProperty[] Properties { get; }
 
-    public ModelProperties(string name, string[] properties)
+    public ModelProperties(string name, ModelProperty[] properties)
     {
         Name = name;
         Properties = properties;

@@ -13,7 +13,7 @@ public enum PullRequestState
     Closed = Merged | Aborted
 }
 
-public class PullRequest : IFilterable
+public partial class PullRequest : IFilterable
 {
     public PullRequest(string title, string author, string url, PullRequestState state, IReadOnlyList<string> labels, Ref<List<TimelineEvent>> events)
     {
@@ -29,6 +29,8 @@ public class PullRequest : IFilterable
     public string Author { get; init; }
     public string Url { get; init; }
     public PullRequestState State { get; init; }
+    [ScanIgnore]
     public IReadOnlyList<string> Labels { get; init; }
+    [ScanIgnore]
     public Ref<List<TimelineEvent>> Events { get; init; }
 }

@@ -15,16 +15,17 @@ internal static class ScanProcessing
 
         var props = syntax
             .GetProperties()
-            .Select(k => k.GetScanPropertyName()?.Trim())
+            .Select(k => k.GetScanProperty())
             .Where(k => k is not null)
             .ToArray();
 
         return new ModelProperties(entityName, props);
     }
     
-    private static string? GetScanPropertyName(this PropertyDeclarationSyntax prop)
+    private static ModelProperty GetScanProperty(this PropertyDeclarationSyntax prop)
     {
         var attributes = prop.GetAttributes();
+        var propertyName = prop.GetName().Trim();
         foreach (var attribute in attributes)
         {
             var attrName = attribute.ToLowerNoAttributePostfix();
@@ -32,20 +33,20 @@ internal static class ScanProcessing
                 return null;
 
             if (attrName.Equals(ScanPropertyTrigger))
-                return GetPublicAnnotatedPropertyName(attribute, prop.GetName());
+                return GetPublicAnnotatedProperty(attribute, propertyName);
         }
 
-        return prop.GetName();
+        return new ModelProperty(propertyName,  propertyName);
     }
     
-    private static string GetPublicAnnotatedPropertyName(AttributeSyntax atr, string defaultName)
+    private static ModelProperty GetPublicAnnotatedProperty(AttributeSyntax atr, string propertyName)
     {
         var args = atr.GetArguments().ToList();
 
         if (args.Count == 0)
-            return defaultName;
+            return new ModelProperty(propertyName, propertyName);
 
         var overrideName = args[0];
-        return overrideName.Expression.ToFullString().Replace("\"", string.Empty);
+        return new ModelProperty(overrideName.Expression.ToFullString().Replace("\"", string.Empty), propertyName);
     }
 }

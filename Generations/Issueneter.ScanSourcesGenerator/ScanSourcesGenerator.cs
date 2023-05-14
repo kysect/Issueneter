@@ -50,5 +50,11 @@ public class ScanSourcesGenerator : IIncrementalGenerator
     {
         var code = ScanSourcesGenerationHelper.Generate(models);
         context.AddSource("ModelsInfo.g.cs", SourceText.From(code, Encoding.UTF8));
+
+        foreach (var model in models)
+        {
+            var modelCode = FilterableGenerationHelper.Generate(model);
+            context.AddSource($"{model.Name}.g.cs", SourceText.From(modelCode, Encoding.UTF8));
+        }
     }
 }
