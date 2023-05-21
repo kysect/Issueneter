@@ -5,7 +5,17 @@ public readonly struct ScanType
 {
     public static ScanType Issue => new ScanType("Issue");
     public static ScanType PullRequest => new ScanType("PullRequest");
-    
+
+    public static ScanType Parse(string value)
+    {
+        return value.ToLower() switch
+        {
+            "issue" => Issue,
+            "pullrequst" => PullRequest,
+            _ => throw new ArgumentOutOfRangeException(nameof(value))
+        };
+    }
+
     public string Value { get; }
 
     private ScanType(string value)
