@@ -3,7 +3,7 @@ using Issueneter.Annotation;
 
 namespace Issueneter.ScanSourcesGenerator;
 
-public class ScanSourcesGenerationHelper
+public static class ScanSourcesGenerationHelper
 {
     private const string Start = @"
 using System;
@@ -32,7 +32,7 @@ public static class ModelsInfo
         builder.Append(Start);
         foreach (var source in sources)
         {
-            builder.Append($"\t\tnew ScanSource({WrapWithQuotes(source.Name)}, new List<string>(){{{string.Join(", ", source.Properties.Select(p => WrapWithQuotes(p.Name)))}}}),\n");
+            builder.Append($"\t\tnew ScanSource(ScanType.{source.Name}, new List<string>(){{{string.Join(", ", source.Properties.Select(p => WrapWithQuotes(p.Name)))}}}),\n");
         }
 
         builder.Append(End);

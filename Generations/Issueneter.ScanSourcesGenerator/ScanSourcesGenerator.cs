@@ -48,8 +48,12 @@ public class ScanSourcesGenerator : IIncrementalGenerator
     
     private static void Execute(Compilation compilation, ImmutableArray<ModelProperties> models, SourceProductionContext context)
     {
-        var code = ScanSourcesGenerationHelper.Generate(models);
-        context.AddSource("ModelsInfo.g.cs", SourceText.From(code, Encoding.UTF8));
+        var modelsInfo = ScanSourcesGenerationHelper.Generate(models);
+        context.AddSource("ModelsInfo.g.cs", SourceText.From(modelsInfo, Encoding.UTF8));
+
+        var scanType = ScanTypeGenerationHelper.Generate(models);
+        context.AddSource("ScanType.g.cs", SourceText.From(scanType, Encoding.UTF8));
+
 
         foreach (var model in models)
         {

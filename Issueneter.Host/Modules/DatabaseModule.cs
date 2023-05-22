@@ -1,4 +1,5 @@
 ﻿using Issueneter.Host.Composition;
+using Issueneter.Mappings;
 using Issueneter.Persistence;
 using Issueneter.Persistence.TypeHandlers;
 

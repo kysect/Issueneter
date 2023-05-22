@@ -3,6 +3,7 @@ using Issueneter.Domain.Models;
 using Issueneter.Filters;
 using Issueneter.Github;
 using Issueneter.Json;
+using Issueneter.Mappings;
 using Issueneter.Persistence;
 using Issueneter.Telegram;
 using Issueneter.Telegram.Formatters;
@@ -31,7 +32,7 @@ public class ScanRunner
             return;
         
         var source = new ActivitySource(scan.Owner, scan.Repo);
-        if (scan.ScanType == 1)
+        if (scan.ScanType == ScanType.Issue)
         {
             var formatter = new IssueMessageFormatter();
             var issues = await _github.GetIssues(DateTimeOffset.Now - TimeSpan.FromMinutes(45), source);

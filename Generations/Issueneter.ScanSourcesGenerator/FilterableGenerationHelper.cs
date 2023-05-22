@@ -2,7 +2,7 @@ using System.Text;
 
 namespace Issueneter.ScanSourcesGenerator;
 
-public class FilterableGenerationHelper
+public static class FilterableGenerationHelper
 {
     private const string Start = @"
 using System;

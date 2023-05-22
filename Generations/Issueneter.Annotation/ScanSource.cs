@@ -4,12 +4,12 @@ public class ScanSource
 {
     private readonly List<string> _fields;
 
-    public string Name { get; }
+    public ScanSource Source { get; }
     public IReadOnlyCollection<string> Fields  => _fields;
 
-    public ScanSource(string name, List<string> fields)
+    public ScanSource(ScanSource source, List<string> fields)
     {
-        Name = name;
+        Source = source;
         _fields = fields;
     }
 }

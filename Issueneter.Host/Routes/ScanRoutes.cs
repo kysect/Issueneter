@@ -3,6 +3,7 @@ using Issueneter.Domain.Models;
 using Issueneter.Filters;
 using Issueneter.Host.Requests;
 using Issueneter.Json;
+using Issueneter.Mappings;
 using Issueneter.Persistence;
 using Issueneter.Runner;
 using Microsoft.AspNetCore.Mvc;
