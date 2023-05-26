@@ -5,24 +5,25 @@ namespace Issueneter.ScanSourcesGenerator;
 
 public static class ScanSourcesGenerationHelper
 {
-    private const string Start = @"
-using System;
-using System.Collections.Generic;
-using Issueneter.Annotation;
+    private const string Start = """
+        using System;
+        using System.Collections.Generic;
+        using Issueneter.Annotation;
+        
+        namespace Issueneter.Mappings;
+        
+        public static class ModelsInfo
+        {
+            private static readonly List<ScanSource> _availableSources = new List<ScanSource>()
+            {
+        """;
 
-namespace Issueneter.Mappings;
-
-public static class ModelsInfo
-{
-    private static readonly List<ScanSource> _availableSources = new List<ScanSource>()
-    {
-";
-
-    private const string End = @"
-    };
-
-    public static IReadOnlyCollection<ScanSource> AvailableScanSources => _availableSources;
-}";
+    private const string End = """
+            };
+        
+            public static IReadOnlyCollection<ScanSource> AvailableScanSources => _availableSources;
+        }
+        """;
 
     private static string WrapWithQuotes(string str) => $"\"{str}\"";
     
