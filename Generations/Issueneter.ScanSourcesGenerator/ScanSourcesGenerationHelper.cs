@@ -14,14 +14,15 @@ public static class ScanSourcesGenerationHelper
         
         public static class ModelsInfo
         {
-            private static readonly List<ScanSource> _availableSources = new List<ScanSource>()
+            private static readonly Dictionary<ScanType, IReadOnlyCollection<string>> _availableSources = new ()
             {
+
         """;
 
     private const string End = """
             };
         
-            public static IReadOnlyCollection<ScanSource> AvailableScanSources => _availableSources;
+            public static IReadOnlyDictionary<ScanType, IReadOnlyCollection<string>> AvailableScanSources => _availableSources;
         }
         """;
 
@@ -33,7 +34,7 @@ public static class ScanSourcesGenerationHelper
         builder.Append(Start);
         foreach (var source in sources)
         {
-            builder.Append($"\t\tnew ScanSource(ScanType.{source.Name}, new List<string>(){{{string.Join(", ", source.Properties.Select(p => WrapWithQuotes(p.Name)))}}}),\n");
+            builder.Append($"\t\t[ScanType.{source.Name}] = new []{{{string.Join(", ", source.Properties.Select(p => WrapWithQuotes(p.Name)))}}},\n");
         }
 
         builder.Append(End);

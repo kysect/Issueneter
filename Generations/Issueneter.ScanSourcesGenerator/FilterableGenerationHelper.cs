@@ -15,6 +15,7 @@ public static class FilterableGenerationHelper
         {{
             public string GetProperty(string name) => name.ToLower() switch
             {{
+
         """;
 
     private const string End = """

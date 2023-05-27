@@ -9,6 +9,7 @@ public static class ScanTypeGenerationHelper
         
         public readonly struct ScanType
         {
+
         """;
 
     private const string Middle = """
@@ -16,6 +17,7 @@ public static class ScanTypeGenerationHelper
             {
                 return value.ToLower() switch
                 {
+
         """;
     
     private const string End = """
