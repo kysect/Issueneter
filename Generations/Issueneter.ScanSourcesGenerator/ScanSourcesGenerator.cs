@@ -11,8 +11,7 @@ namespace Issueneter.ScanSourcesGenerator;
 [Generator]
 public class ScanSourcesGenerator : IIncrementalGenerator
 {
-    private const string TriggerInterface = "IFilterable";
-
+    private const string TriggerInterface = FilterableInterfaceGenerationHelper.InterfaceName;
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
         var filterables = context

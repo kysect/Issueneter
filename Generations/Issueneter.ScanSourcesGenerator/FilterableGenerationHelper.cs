@@ -8,6 +8,7 @@ public static class FilterableGenerationHelper
         using System;
         using System.Collections.Generic;
         using Issueneter.Annotation;
+        using Issueneter.Mappings;
         
         namespace Issueneter.Domain.Models;
         
@@ -19,9 +20,11 @@ public static class FilterableGenerationHelper
         """;
 
     private const string End = """
-                _ => throw new ArgumentOutOfRangeException(nameof(name), $"Not expected property name: {name}"),
-            };
-        }
+                _ => throw new ArgumentOutOfRangeException(nameof(name), $"Not expected property name: {{name}}"),
+            }};
+
+            public static ScanType ScanType => ScanType.{0};
+        }}
         """;
 
     private static string WrapWithQuotes(string str) => $"\"{str}\"";
@@ -36,7 +39,7 @@ public static class FilterableGenerationHelper
             stringBuilder.AppendLine($"\t\t{WrapWithQuotes(property.Name.ToLower())} => {property.FieldName}.ToString(),");
         }
 
-        stringBuilder.Append(End);
+        stringBuilder.AppendFormat(End, model.Name);
         return stringBuilder.ToString();
     }
 }

@@ -34,7 +34,7 @@ public static class ScanSourcesGenerationHelper
         builder.Append(Start);
         foreach (var source in sources)
         {
-            builder.Append($"\t\t[ScanType.{source.Name}] = new []{{{string.Join(", ", source.Properties.Select(p => WrapWithQuotes(p.Name)))}}},\n");
+            builder.Append($"\t\t[ScanType.{source.Name}] = new string[]{{{string.Join(", ", source.Properties.Select(p => WrapWithQuotes(p.Name)))}}},\n");
         }
 
         builder.Append(End);

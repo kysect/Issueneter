@@ -7,11 +7,15 @@ public class FilterableInterfaceGenerationHelper
     public static string Generate()
     {
         return $$"""
+                using Issueneter.Mappings;
+
                 namespace Issueneter.Annotation;
 
                 public interface {{InterfaceName}}
                 {
                     string GetProperty(string name);
+
+                    static abstract ScanType ScanType { get; }
                 }
                 """;
     }
