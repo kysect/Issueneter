@@ -2,7 +2,7 @@ using Issueneter.Annotation;
 
 namespace Issueneter.Filters.Validators;
 
-public interface IFilterValidator<TFilter, TFilterable> where TFilter : IFilter<TFilterable> where TFilterable : IFilterable
+public interface IFilterValidator<in TFilter, TFilterable> where TFilter : IFilter<TFilterable> where TFilterable : IFilterable
 {
-    public bool Validate(TFilter filter);
+    public static abstract bool Validate(TFilter filter);
 }
