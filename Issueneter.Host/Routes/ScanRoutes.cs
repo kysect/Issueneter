@@ -50,7 +50,7 @@ public static class ScanRoutes
         // TODO: Засурсгенить
         if (source.ToLowerInvariant() == "issue")
         {
-            var repoFilters = JsonConvert.DeserializeObject<IFilter<Issue>>(request.Filters, new JsonFilterConverter<Issue>());
+            var repoFilters = IssueneterJsonSerializer.Deserialize<Issue>(request.Filters);
             var creation = new ScanCreation(ScanType.Issue, request.Owner, request.Repo, request.ChatId, request.Filters);
             var scanId = await storage.CreateNewScan(creation);
         
