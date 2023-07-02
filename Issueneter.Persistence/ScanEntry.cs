@@ -1,9 +1,11 @@
-﻿namespace Issueneter.Persistence;
+﻿using Issueneter.Mappings;
+
+namespace Issueneter.Persistence;
 
 public class ScanEntry
 {
     public ScanEntry(){}
-    public ScanEntry(long Id, short ScanType, string Owner, string Repo, long ChatId, DateTime Created, string Filters)
+    public ScanEntry(long Id, ScanType ScanType, string Owner, string Repo, long ChatId, DateTime Created, string Filters)
     {
         this.Id = Id;
         this.ScanType = ScanType;
@@ -15,7 +17,7 @@ public class ScanEntry
     }
 
     public long Id { get; init; }
-    public short ScanType { get; init; }
+    public ScanType ScanType { get; init; }
     public string Owner { get; init; }
     public string Repo { get; init; }
     public long ChatId { get; init; }

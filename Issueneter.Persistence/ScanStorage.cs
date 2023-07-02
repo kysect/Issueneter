@@ -39,7 +39,7 @@ public class ScanStorage
 
         var @params = new
         {
-            type = (int)creation.Type,
+            type = creation.Type,
             acc = creation.Owner,
             repo = creation.Repo,
             chat = creation.ChatId,

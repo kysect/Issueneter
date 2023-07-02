@@ -3,6 +3,7 @@ using Issueneter.Domain.Models;
 using Issueneter.Filters;
 using Issueneter.Host.Requests;
 using Issueneter.Json;
+using Issueneter.Mappings;
 using Issueneter.Persistence;
 using Issueneter.Runner;
 using Microsoft.AspNetCore.Mvc;
@@ -49,7 +50,7 @@ public static class ScanRoutes
         // TODO: Засурсгенить
         if (source.ToLowerInvariant() == "issue")
         {
-            var repoFilters = JsonConvert.DeserializeObject<IFilter<Issue>>(request.Filters, new JsonFilterConverter<Issue>());
+            var repoFilters = IssueneterJsonSerializer.Deserialize<Issue>(request.Filters);
             var creation = new ScanCreation(ScanType.Issue, request.Owner, request.Repo, request.ChatId, request.Filters);
             var scanId = await storage.CreateNewScan(creation);
         

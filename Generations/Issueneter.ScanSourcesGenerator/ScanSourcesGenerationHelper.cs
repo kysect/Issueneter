@@ -3,26 +3,28 @@ using Issueneter.Annotation;
 
 namespace Issueneter.ScanSourcesGenerator;
 
-public class ScanSourcesGenerationHelper
+public static class ScanSourcesGenerationHelper
 {
-    private const string Start = @"
-using System;
-using System.Collections.Generic;
-using Issueneter.Annotation;
+    private const string Start = """
+        using System;
+        using System.Collections.Generic;
+        using Issueneter.Annotation;
+        
+        namespace Issueneter.Mappings;
+        
+        public static class ModelsInfo
+        {
+            private static readonly Dictionary<ScanType, IReadOnlyCollection<string>> _availableSources = new ()
+            {
 
-namespace Issueneter.Mappings;
+        """;
 
-public static class ModelsInfo
-{
-    private static readonly List<ScanSource> _availableSources = new List<ScanSource>()
-    {
-";
-
-    private const string End = @"
-    };
-
-    public static IReadOnlyCollection<ScanSource> AvailableScanSources => _availableSources;
-}";
+    private const string End = """
+            };
+        
+            public static IReadOnlyDictionary<ScanType, IReadOnlyCollection<string>> AvailableScanSources => _availableSources;
+        }
+        """;
 
     private static string WrapWithQuotes(string str) => $"\"{str}\"";
     
@@ -32,7 +34,7 @@ public static class ModelsInfo
         builder.Append(Start);
         foreach (var source in sources)
         {
-            builder.Append($"\t\tnew ScanSource({WrapWithQuotes(source.Name)}, new List<string>(){{{string.Join(", ", source.Properties.Select(p => WrapWithQuotes(p.Name)))}}}),\n");
+            builder.Append($"\t\t[ScanType.{source.Name}] = new string[]{{{string.Join(", ", source.Properties.Select(p => WrapWithQuotes(p.Name)))}}},\n");
         }
 
         builder.Append(End);

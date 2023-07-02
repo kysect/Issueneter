@@ -11,8 +11,7 @@ namespace Issueneter.ScanSourcesGenerator;
 [Generator]
 public class ScanSourcesGenerator : IIncrementalGenerator
 {
-    private const string TriggerInterface = nameof(IFilterable);
-
+    private const string TriggerInterface = FilterableInterfaceGenerationHelper.InterfaceName;
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
         var filterables = context
@@ -48,8 +47,14 @@ public class ScanSourcesGenerator : IIncrementalGenerator
     
     private static void Execute(Compilation compilation, ImmutableArray<ModelProperties> models, SourceProductionContext context)
     {
-        var code = ScanSourcesGenerationHelper.Generate(models);
-        context.AddSource("ModelsInfo.g.cs", SourceText.From(code, Encoding.UTF8));
+        context.AddSource("IFilterable.g.cs", SourceText.From(FilterableInterfaceGenerationHelper.Generate(), Encoding.UTF8));
+        
+        var modelsInfo = ScanSourcesGenerationHelper.Generate(models);
+        context.AddSource("ModelsInfo.g.cs", SourceText.From(modelsInfo, Encoding.UTF8));
+
+        var scanType = ScanTypeGenerationHelper.Generate(models);
+        context.AddSource("ScanType.g.cs", SourceText.From(scanType, Encoding.UTF8));
+
 
         foreach (var model in models)
         {
