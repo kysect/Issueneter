@@ -1,4 +1,5 @@
 using Issueneter.Annotation;
+using Issueneter.Domain.Utility;
 using Issueneter.Filters.PredefinedFilters;
 
 namespace Issueneter.Filters.Validators;
@@ -15,7 +16,7 @@ public static class FilterValidatorApplier
             StateFilter f => Validate<TFilterable>(f),
             ComplexFilter<TFilterable> f => Validate(f),
             DynamicFilter<TFilterable> f => Validate(f),
-            _ => throw new ArgumentOutOfRangeException(nameof(filter)),
+            _ => throw IssueneterArgumentException.For(filter),
         };
     }
     
