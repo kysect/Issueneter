@@ -53,8 +53,8 @@ public static class ScanRoutes
             var repoFilters = IssueneterJsonSerializer.Deserialize<Issue>(request.Filters);
             var creation = new ScanCreation(ScanType.Issue, request.Owner, request.Repo, request.ChatId, request.Filters);
             var scanId = await storage.CreateNewScan(creation);
-        
-            RecurringJob.AddOrUpdate<ScanRunner>(scanId.ToString(), (runner) => runner.Run(scanId), "* * * * *");
+            
+            RecurringJob.AddOrUpdate<ScanRunner>(scanId.ToString(), (runner) => runner.Run(scanId), "0,30 * * * *");
             return Results.Ok();
         }
 
