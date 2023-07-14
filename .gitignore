@@ -365,3 +365,4 @@ FodyWeavers.xsd
 .idea
 
 Issueneter.Host/appsettings.local.json
+*.g.cs
