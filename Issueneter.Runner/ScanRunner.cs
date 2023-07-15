@@ -35,7 +35,7 @@ public class ScanRunner
         if (scan.ScanType == ScanType.Issue)
         {
             var formatter = new IssueMessageFormatter();
-            var issues = await _github.GetIssues(DateTimeOffset.Now - TimeSpan.FromMinutes(45), source);
+            var issues = await _github.GetIssues(DateTimeOffset.Now - TimeSpan.FromMinutes(30), source);
 
             var filters = JsonConvert.DeserializeObject<String>(scan.Filters);
             var rootFilter = IssueneterJsonSerializer.Deserialize<Issue>(filters);
