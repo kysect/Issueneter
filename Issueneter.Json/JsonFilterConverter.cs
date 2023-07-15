@@ -29,7 +29,7 @@ public class JsonFilterConverter<T> : JsonConverter<IFilter<T>> where T : IFilte
             case "dynamic":
                 return new DynamicFilter<T>();
             default:
-                throw new ArgumentException($"Invalid filter type: {type}");
+                throw new ArgumentOutOfRangeException($"Invalid filter type: {type}");
         }
     }
 
