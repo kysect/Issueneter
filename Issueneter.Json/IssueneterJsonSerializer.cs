@@ -11,8 +11,7 @@ public class IssueneterJsonSerializer
     {
         var filter = JsonConvert.DeserializeObject<IFilter<TFilterable>>(data, new JsonFilterConverter<TFilterable>());
         if (!FilterValidatorApplier.Validate(filter))
-            // TODO: Change exception
-            throw new InvalidDataException();
+            throw new IssueneterValidationException($"Filter input data is not valid. Data: {data}");
 
         return filter;
     }

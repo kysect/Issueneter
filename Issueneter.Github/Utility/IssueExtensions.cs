@@ -13,7 +13,7 @@ public static class IssueExtension
             { State.Value: ItemState.Closed, StateReason.Value: ItemStateReason.Completed } => IssueState.Completed,
             { State.Value: ItemState.Closed, StateReason.Value: ItemStateReason.NotPlanned } => IssueState.NotPlanned,
             { State.Value: ItemState.Open } => IssueState.Opened,
-            _ => throw new ArgumentOutOfRangeException(nameof(issue), "Can't determine issue state")
+            _ => throw new ArgumentOutOfRangeException(nameof(issue), $"Can't determine issue state. State value: {issue.State.Value}")
         };
     }
 }

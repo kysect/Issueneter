@@ -12,6 +12,6 @@ public static class PullRequestExtension
         { State.Value: ItemState.Open } => PullRequestState.Active,
         { State.Value: ItemState.Closed, Merged: true} => PullRequestState.Merged,
         { State.Value: ItemState.Closed } => PullRequestState.Aborted,
-        _ => throw new ArgumentOutOfRangeException(nameof(pullRequest), "Can't determine pull request state")
+        _ => throw new ArgumentOutOfRangeException(nameof(pullRequest), $"Can't determine pull request state. State value: {pullRequest.State.Value}")
     };
 }

@@ -28,9 +28,9 @@ public class JsonFilterConverter<T> : JsonConverter<IFilter<T>> where T : IFilte
                 return new StateFilter();
             case "dynamic":
                 return new DynamicFilter<T>();
+            default:
+                throw new ArgumentOutOfRangeException($"Invalid filter type: {type}");
         }
-
-        throw new Exception("");
     }
 
     public override void WriteJson(JsonWriter writer, IFilter<T> value, JsonSerializer serializer)
