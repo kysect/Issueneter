@@ -7,7 +7,6 @@ namespace Issueneter.Tests
 {
     public class IssueConfigurableMessageFormatterTests
     {
-
         private static IEnumerable GetTestCases()
         {
             var dummyRefValue = new Ref<List<TimelineEvent>>(() => Task.FromResult(new List<TimelineEvent>()));
@@ -28,7 +27,7 @@ namespace Issueneter.Tests
         [TestCaseSource(nameof(GetTestCases))]
         public void Formatter_ReturnCorrectString(string template, Issue issue, string expected)
         {
-            var formatter = new IssueConfigurableMessageFormatter(template);
+            var formatter = new ConfigurableMessageFormatter<Issue>(template);
 
             var actual = formatter.ToMessage(issue);
 

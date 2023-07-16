@@ -7,7 +7,6 @@ namespace Issueneter.Tests;
 
 public class PullRequestConfigurableMessageFormatterTests
 {
-
     private static IEnumerable GetTestCases()
     {
         var dummyRefValue = new Ref<List<TimelineEvent>>(() => Task.FromResult(new List<TimelineEvent>()));
@@ -28,7 +27,7 @@ public class PullRequestConfigurableMessageFormatterTests
     [TestCaseSource(nameof(GetTestCases))]
     public void Formatter_ReturnCorrectString(string template, PullRequest pullRequest, string expected)
     {
-        var formatter = new PullRequestConfigurableMessageFormatter(template);
+        var formatter = new ConfigurableMessageFormatter<PullRequest>(template);
 
         var actual = formatter.ToMessage(pullRequest);
 

@@ -19,7 +19,7 @@ public static class ScanModule
         var options = serviceProvider.GetRequiredOptions<TelegramOptions>();
 
         if (options.IssueMessageTemplate is not null)
-            return new IssueConfigurableMessageFormatter(options.IssueMessageTemplate);
+            return new ConfigurableMessageFormatter<Issue>(options.IssueMessageTemplate);
 
         return new IssueMessageFormatter();
     }
@@ -29,7 +29,7 @@ public static class ScanModule
         var options = serviceProvider.GetRequiredOptions<TelegramOptions>();
 
         if (options.PullRequestMessageTemplate is not null)
-            return new PullRequestConfigurableMessageFormatter(options.PullRequestMessageTemplate);
+            return new ConfigurableMessageFormatter<PullRequest>(options.PullRequestMessageTemplate);
 
         return new PullRequestMessageFormatter();
     }
