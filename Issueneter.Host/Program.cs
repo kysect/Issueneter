@@ -17,7 +17,7 @@ services
     .AddHangfireModule(env, config)
     .AddSwaggerModule(env, config)
     .AddTelegramModule(env, config)
-    .AddSingleton<ScanRunner>();
+    .AddScanModule(env, config);
 
 var app = builder.Build();
 

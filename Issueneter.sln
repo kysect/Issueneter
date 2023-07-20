@@ -22,6 +22,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Issueneter.Annotation", "Ge
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Issueneter.ScanSourcesGenerator", "Generations\Issueneter.ScanSourcesGenerator\Issueneter.ScanSourcesGenerator.csproj", "{8E8BA128-DD99-4367-8502-88EFC1205613}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Issueneter.Tests", "Issueneter.Tests\Issueneter.Tests.csproj", "{B696EBD5-4F35-42BC-8158-618DE4D9CF2F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -68,6 +70,10 @@ Global
 		{8E8BA128-DD99-4367-8502-88EFC1205613}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8E8BA128-DD99-4367-8502-88EFC1205613}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8E8BA128-DD99-4367-8502-88EFC1205613}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B696EBD5-4F35-42BC-8158-618DE4D9CF2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B696EBD5-4F35-42BC-8158-618DE4D9CF2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B696EBD5-4F35-42BC-8158-618DE4D9CF2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B696EBD5-4F35-42BC-8158-618DE4D9CF2F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{95386239-56C7-4BB3-A098-258B30404A33} = {4652AD14-6886-4361-B050-8F40F0214E3A}
